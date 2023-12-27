@@ -29,59 +29,59 @@ unsigned char ACTUATE[] = { 0x00, 0x00, 0x00, 0x00, 0x80, 0x2c, 0x05, 0x82,
 namespace osprey_robotics
 {
 
-	Joint::Joint()
-	{
-	}
+    Joint::Joint()
+    {
+    }
 
-	Joint::Joint(uint8_t id, std::string serial, uint8_t actuatorType)
-	{
-		this->id_ = id;
-		this->serial_ = serial;
-		this->actuatorType_ = actuatorType;
-	}
+    Joint::Joint(uint8_t id, std::string serial, uint8_t actuatorType)
+    {
+        this->id_ = id;
+        this->serial_ = serial;
+        this->actuatorType_ = actuatorType;
+    }
 
-	Joint::~Joint()
-	{
-	}
+    Joint::~Joint()
+    {
+    }
 
-	uint8_t Joint::getId()
-	{
-		return this->id_;
-	}
+    uint8_t Joint::getId()
+    {
+        return this->id_;
+    }
 
-	std::string Joint::getSerial()
-	{
-		return this->serial_;
-	}
+    std::string Joint::getSerial()
+    {
+        return this->serial_;
+    }
 
-	void Joint::actuate(double effort, uint8_t /*duration = 1*/)
-	{
-    	int transferred;
+    void Joint::actuate(double effort, uint8_t /*duration = 1*/)
+    {
+        int transferred;
 
-		if (actuatorType_ == ACTUATOR_TYPE_MOTOR)
-		{
-			if (effort > 50.0)
-				effort = 50.0;
-			if (effort < -50.0)
-				effort = -50.0;
+        if (actuatorType_ == ACTUATOR_TYPE_MOTOR)
+        {
+            if (effort > 50.0)
+                effort = 50.0;
+            if (effort < -50.0)
+                effort = -50.0;
 
-			// reduce range to -0.50 to 0.50
-			_Float32 speed = (_Float32)effort / 100.0f;
-			unsigned char const *cFloat = reinterpret_cast<unsigned char const *>(&speed);
+            // reduce range to -0.50 to 0.50
+            _Float32 speed = (_Float32)effort / 100.0f;
+            unsigned char const *cFloat = reinterpret_cast<unsigned char const *>(&speed);
 
-			// set speed in command
-			SPEED[12] = cFloat[0];
-			SPEED[13] = cFloat[1];
-			SPEED[14] = cFloat[2];
-			SPEED[15] = cFloat[3];
+            // set speed in command
+            SPEED[12] = cFloat[0];
+            SPEED[13] = cFloat[1];
+            SPEED[14] = cFloat[2];
+            SPEED[15] = cFloat[3];
 
-			// write speed to Spark Max Controller
-			usb->bulkWrite(this->serial_, MOTOR_USB_ENDPOINT, SPEED, sizeof(SPEED), &transferred, 1000);
-			// activate motor
-			usb->bulkWrite(this->serial_, MOTOR_USB_ENDPOINT, ACTUATE, sizeof(ACTUATE), &transferred, 1000);
+            // write speed to Spark Max Controller
+            usb->bulkWrite(this->serial_, MOTOR_USB_ENDPOINT, SPEED, sizeof(SPEED), &transferred, 1000);
+            // activate motor
+            usb->bulkWrite(this->serial_, MOTOR_USB_ENDPOINT, ACTUATE, sizeof(ACTUATE), &transferred, 1000);
 
-			printf("transferred: [%i]; effort: [%f]; motor: %i, speed: %f",
-					transferred, effort, this->id_, (double)speed);
-		}
-	}
+            printf("transferred: [%i]; effort: [%f]; motor: %i, speed: %f",
+                    transferred, effort, this->id_, (double)speed);
+        }
+    }
 }
