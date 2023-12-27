@@ -1,9 +1,9 @@
 
 /** Copyright 2023 Osprey Robotics - UNF
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*/
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ */
 
 #include <iomanip>
 #include <iostream>
@@ -15,22 +15,22 @@
 
 namespace osprey_robotics
 {
-	USB::USB()
-	{
+    USB::USB()
+    {
         int rc;
 
         rc = libusb_init(&_usbContext);
-		if (rc < 0)
-		{
-			std::cerr << "Failed to init USB context Error : " << rc << " - " << strerror(errno);
-		}
+        if (rc < 0)
+        {
+            std::cerr << "Failed to init USB context Error : " << rc << " - " << strerror(errno);
+        }
 
         // libusb_set_debug(_usbContext, LIBUSB_LOG_LEVEL_DEBUG);
     }
 
-	USB::~USB()
-	{
-        for (const auto& [serial, handle] : _devices)
+    USB::~USB()
+    {
+        for (const auto &[serial, handle] : _devices)
         {
             libusb_close(handle);
         }
@@ -42,11 +42,12 @@ namespace osprey_robotics
         auto *data = new uint8_t[33]();
         libusb_device **devs;
         libusb_device *dev;
-	    ssize_t cnt;
+        ssize_t cnt;
         int i = 0;
 
         cnt = libusb_get_device_list(NULL, &devs);
-        if (cnt < 0){
+        if (cnt < 0)
+        {
             return 0;
         }
 
@@ -64,7 +65,7 @@ namespace osprey_robotics
 
             if (vid == desc.idVendor || pid == desc.idProduct)
             {
-                struct libusb_device_handle *handle{ nullptr };
+                struct libusb_device_handle *handle{nullptr};
 
                 r = libusb_open(dev, &handle);
                 if (r < 0)
@@ -104,7 +105,7 @@ namespace osprey_robotics
         int r = 0;
         uint8_t path[8];
 
-        for (const auto& [serial, handle] : _devices)
+        for (const auto &[serial, handle] : _devices)
         {
             dev = libusb_get_device(handle);
 
@@ -132,9 +133,9 @@ namespace osprey_robotics
 
     uint8_t USB::bulkWrite(std::string serial,
                            unsigned char endpoint,
-                           unsigned char* data,
+                           unsigned char *data,
                            int length,
-                           int* transferred,
+                           int *transferred,
                            unsigned int timeout = 1000)
     {
         int r = 0;
@@ -148,7 +149,7 @@ namespace osprey_robotics
         }
 
         r = libusb_bulk_transfer(_devices[serial], endpoint, data, length, transferred, timeout);
-        if(r == 0 && *transferred == length)
+        if (r == 0 && *transferred == length)
         {
             printf("Write successful to %s, sent %d bytes : ", serial.c_str(), *transferred);
             std::stringstream ss;
