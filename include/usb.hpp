@@ -16,8 +16,8 @@ namespace osprey_robotics
     /**
      * @brief Class to interface with USB devices, primarily USB motors
      */
-	class USB
-	{
+    class USB
+    {
         public:
             /**
              * @brief Construct a new USB object, handles context initialization
