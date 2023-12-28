@@ -11,36 +11,36 @@
 
 namespace osprey_robotics
 {
-	/**
-	 * @brief Template class that represents segments attached to the robot base
-	 * 
-	 * @tparam T the number of segments attached
-	 */
-	template <int T> class Segment
-	{
-		private:
+    /**
+     * @brief Template class that represents segments attached to the robot base
+     * 
+     * @tparam T the number of segments attached
+     */
+    template <int T> class Segment
+    {
+        public:
+            Joint joints[T];
 
-		public:
-			Joint joints[T];
+            /**
+             * @brief Construct a new Segment object, empty/unused
+             */
+            Segment() { };
 
-			/**
-			 * @brief Construct a new Segment object, empty/unused
-			 */
-			Segment() { };
+            /**
+             * @brief Destroy the Segment object, empty/unused
+             */
 
-			/**
-			 * @brief Destroy the Segment object, empty/unused
-			 */
+            ~Segment() { };
 
-			~Segment() { };
+            /**
+             * @brief The size of the 
+             * 
+             * @return int 
+             */
+            int size() const { return T; }
 
-			/**
-			 * @brief The size of the 
-			 * 
-			 * @return int 
-			 */
-			int size() const { return T; }
-	};
+        private:
+    };
 }
 
 #endif
