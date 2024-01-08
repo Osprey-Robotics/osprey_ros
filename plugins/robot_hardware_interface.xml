@@ -1,0 +1,10 @@
+<library path="robot_hardware_interface">
+  <class name="robot_hardware_interface/RobotSystemHardware"
+         type="robot_hardware_interface::RobotSystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      A ros2_control system hardware interface-type for Osprey Robotics Robots.
+      It uses velocity command and position state interfaces.
+    </description>
+  </class>
+</library>
