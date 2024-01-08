@@ -10,6 +10,7 @@
 #include <libusb-1.0/libusb.h>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace osprey_robotics
 {
@@ -38,6 +39,20 @@ namespace osprey_robotics
              * @return uint8_t the number of devices loaded
              */
             uint8_t loadDevices(uint16_t vid, uint16_t pid);
+
+            /**
+             * @brief Loads USB Device handles by vendor ID, product ID and
+             *        optional serial number(s). If one or more serial
+             *        numbers is present, only those devices will be loaded.
+             *        Otherwise, all that match the vendor and product IDs will
+             *        be loaded.
+             * 
+             * @param vid USB Vendor ID
+             * @param pid USB Product ID
+             * @param serials List of serial numbers
+             * @return uint8_t the number of devices loaded
+             */
+            uint8_t loadDevices(uint16_t vid, uint16_t pid, std::vector<std::string> serials);
 
             /**
              * @brief Print information on loaded devices
