@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- https://www.unf.edu/brand/colors.html 
+       https://rgbcolorpicker.com/0-1 -->
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <!-- osprey blue -->
+  <material name="blue">
+    <color rgba="0.039 0.137 0.247 1"/>
+  </material>
+
+  <!-- osprey gray -->
+  <material name="gray">
+    <color rgba="0.655 0.659 0.663 1"/>
+  </material>
+
+  <!-- unf leaf -->
+  <material name="green">
+    <color rgba="0.463 0.737 0.263 1"/>
+  </material>
+
+  <!-- unf sunset -->
+  <material name="red">
+    <color rgba="0.769 0.122 0.294 1"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <!-- unf sunshine -->
+  <material name="yellow">
+    <color rgba="1 0.776 0.184 1"/>
+  </material>
+
+</robot>
