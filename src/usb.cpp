@@ -39,6 +39,11 @@ namespace osprey_robotics
 
     uint8_t USB::loadDevices(uint16_t vid, uint16_t pid)
     {
+        return loadDevices(vid, pid, std::vector<std::string>());
+    }
+
+    uint8_t USB::loadDevices(uint16_t vid, uint16_t pid, std::vector<std::string> serials)
+    {
         auto *data = new uint8_t[33]();
         libusb_device **devs;
         libusb_device *dev;
@@ -54,6 +59,7 @@ namespace osprey_robotics
         while ((dev = devs[i++]) != NULL)
         {
             int r;
+            std::stringstream serial;
             struct libusb_device_descriptor desc;
 
             r = libusb_get_device_descriptor(dev, &desc);
@@ -89,8 +95,24 @@ namespace osprey_robotics
                 }
 
                 data[32] = '\0';
-                std::stringstream serial;
                 serial << data;
+
+                if (!serials.empty())
+                {
+                    for (auto &s : serials)
+                    {
+                        if (s == serial.str())
+                        {
+                            goto device_match;
+                        }
+                    }
+
+                    // no match, next device
+                    libusb_close(handle);
+                    continue;
+                }
+
+                device_match:
                 _devices[serial.str()] = handle;
             }
         }
