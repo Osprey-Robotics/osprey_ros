@@ -5,11 +5,15 @@
     <xacro:property name="limit_velocity" value="1" />
 
     <!-- Values in meters -->
-    <xacro:property name="chassis_length" value="0.762" />
+    <xacro:property name="chassis_length" value="0.8128" />
     <xacro:property name="chassis_height" value="0.0889" />
-    <xacro:property name="chassis_width" value="0.368" />
-    <xacro:property name="wheel_length" value="0.1" />
-    <xacro:property name="wheel_radius" value="0.15" />
+    <xacro:property name="chassis_width" value="0.3556" />
+
+    <xacro:property name="wheel_length" value="0.1016" />
+    <xacro:property name="wheel_radius" value="0.1524" />
+    <xacro:property name="wheel_offset_front" value="${-chassis_length/2 + 0.1778}" />
+    <xacro:property name="wheel_offset_rear" value="${chassis_length/2 - 0.2286}" />
+    <xacro:property name="wheel_offset_side" value="${wheel_length/2 + chassis_width/2 + 0.0127}" />
 
     <link name="base_link"></link>
 
@@ -17,24 +21,21 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="-0.1 0 0"/>
     </joint>
     <link name="chassis">
         <collision>
-            <origin xyz="0.0935 0 0.00" rpy="0 0 0"/>
             <geometry>
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
         </collision>
         <visual>
-            <origin xyz="${chassis_length/2} 0 0.00" rpy="0 0 0"/>
             <geometry>
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
             <material name="blue"/>
         </visual>
         <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
-            <origin xyz="${chassis_length/2} 0 0.04675" rpy="0 0 0"/>
+            <origin xyz="${chassis_length/2} 0 0" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
 
@@ -42,7 +43,7 @@
     <joint name="front_left_wheel_joint" type="continuous">
         <parent link="base_link"/>
         <child link="front_left_wheel"/>
-        <origin xyz="-0.0585 0.0725 0" rpy="-${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_front} ${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
         <axis xyz="0 0 1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
@@ -67,7 +68,7 @@
     <joint name="front_right_wheel_joint" type="continuous">
         <parent link="base_link"/>
         <child link="front_right_wheel"/>
-        <origin xyz="-0.0585 -0.0725 0" rpy="${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_front} -${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
         <axis xyz="0 0 -1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
@@ -92,7 +93,7 @@
     <joint name="rear_left_wheel_joint" type="continuous">
         <parent link="base_link"/>
         <child link="rear_left_wheel"/>
-        <origin xyz="0.062 0.0725 0" rpy="-${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_rear} ${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
         <axis xyz="0 0 1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
@@ -117,7 +118,7 @@
     <joint name="rear_right_wheel_joint" type="continuous">
         <parent link="base_link"/>
         <child link="rear_right_wheel"/>
-        <origin xyz="0.062 -0.0725 0" rpy="${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_rear} -${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
         <axis xyz="0 0 -1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
