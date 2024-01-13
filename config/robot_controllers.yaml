@@ -5,8 +5,14 @@ controller_manager:
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
 
+    joint_position_controller:
+      type: position_controllers/JointPositionController
+
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+
+    joint_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
 
 diff_drive_controller:
   ros__parameters:
@@ -22,3 +28,13 @@ diff_drive_controller:
     enable_odom_tf: true
 
     use_stamped_vel: false
+
+joint_position_controller:
+  ros__parameters:
+    joints:
+      - bucket_ladder_lift_joint
+
+joint_velocity_controller:
+  ros__parameters:
+    joints:
+      - bucket_ladder_buckets_joint
