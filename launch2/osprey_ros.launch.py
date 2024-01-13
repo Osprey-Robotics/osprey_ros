@@ -46,6 +46,18 @@ def generate_launch_description():
         arguments=["diff_drive_controller", "-c", "/controller_manager"],
     )
 
+    position_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["position_controllers", "-c", "/controller_manager"],
+    )
+
+    velocity_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["velocity_controllers", "-c", "/controller_manager"],
+    )
+
     joint_broad_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -66,9 +78,25 @@ def generate_launch_description():
         )
     )
 
+    delayed_position_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_broad_spawner,
+            on_exit=[position_spawner],
+        )
+    )
+
+    delayed_velocity_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_broad_spawner,
+            on_exit=[velocity_spawner],
+        )
+    )
+
     return LaunchDescription([
         controller_manager,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
         delayed_diff_drive_spawner,
+        delayed_position_spawner,
+        delayed_velocity_spawner,
     ])
