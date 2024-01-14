@@ -5,6 +5,10 @@
     <xacro:property name="limit_velocity" value="1" />
 
     <!-- Values in meters -->
+    <xacro:property name="bucket_length" value="0.3556" /> <!-- depth -->
+    <xacro:property name="bucket_height" value="0.254" />
+    <xacro:property name="bucket_width" value="0.254" />
+
     <xacro:property name="buckets_length" value="0.254" /> <!-- depth -->
     <xacro:property name="buckets_height" value="0.9144" />
     <xacro:property name="buckets_width" value="0.1778" />
@@ -41,7 +45,7 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="-${chassis_length/2} ${chassis_length/2 - chassis_height - wheel_gap/2} -${chassis_width/2}" rpy="${pi/2} 0 0"/>
+            <origin xyz="-${chassis_length/2 + chassis_height/2} ${chassis_length/2 - chassis_height - wheel_gap/2} -${chassis_width/2}" rpy="${pi/2} 0 0"/>
             <geometry>
                 <mesh filename="package://osprey_ros/meshes/chassis.dae" scale="0.8 0.8 0.8" />
             </geometry>
@@ -200,6 +204,30 @@
         </visual>
         <xacro:inertial_box mass="0.5" x="${buckets_length}" y="${buckets_width}" z="${buckets_height}">
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <joint name="bucket_dump_joint" type="prismatic">
+        <parent link="base_link"/>
+        <child link="bucket"/>
+        <limit lower="0"  upper="2"  velocity="0.1"  effort="${limit_effort}"  />
+        <axis xyz="0 0 1"/>
+        <origin xyz="-${bucket_length/2} 0 ${bucket_height/2 + chassis_height}" rpy="0 0 0"/>
+    </joint>
+    <link name="bucket">
+        <collision>
+            <geometry>
+                <box size="${bucket_length} ${bucket_width} ${bucket_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-${bucket_length/2} ${bucket_length/2} -${chassis_height}" rpy="${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="package://osprey_ros/meshes/bucket_body.dae" scale="0.065 0.065 0.065" />
+            </geometry>
+        </visual>
+        <xacro:inertial_box mass="0.5" x="${bucket_length}" y="${bucket_width}" z="${bucket_height}">
+            <origin xyz="${chassis_length/2} 0 ${bucket_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
 
