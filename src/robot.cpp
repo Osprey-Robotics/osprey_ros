@@ -13,7 +13,7 @@ namespace osprey_robotics
     Robot::Robot()
     {
         // shared USB interface and devices
-        USB usb = USB();
+        static USB usb = USB();
         usb.loadDevices(MOTOR_USB_VID, MOTOR_USB_PID);
 
         // robot base
