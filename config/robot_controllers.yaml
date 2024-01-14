@@ -32,6 +32,7 @@ diff_drive_controller:
 joint_position_controller:
   ros__parameters:
     joints:
+      - bucket_dump_joint
       - bucket_ladder_lift_joint
 
 joint_velocity_controller:
