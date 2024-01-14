@@ -32,7 +32,7 @@ namespace osprey_robotics
         base.joints[4] = Joint(5, SERIAL_LADDER_DIG, ACTUATOR_TYPE_MOTOR);
         base.joints[4].name = "bucket_ladder_lift_joint";
         base.joints[4].usb = &usb;
-        base.joints[5] = Joint(6, SERIAL_LADDER_DIG, ACTUATOR_TYPE_MOTOR);
+        base.joints[5] = Joint(6, SERIAL_LADDER_LIFT, ACTUATOR_TYPE_MOTOR);
         base.joints[5].name = "bucket_ladder_buckets_joint";
         base.joints[5].usb = &usb;
     }
