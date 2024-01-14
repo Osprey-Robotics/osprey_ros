@@ -171,19 +171,22 @@ namespace osprey_robotics
         }
 
         r = libusb_bulk_transfer(_devices[serial], endpoint, data, length, transferred, timeout);
-        if (r == 0 && *transferred == length)
+        if (r < 0)
         {
-            printf("Write successful to %s, sent %d bytes : ", serial.c_str(), *transferred);
-            std::stringstream ss;
-            for (int i = 0; i < length; i++)
-            {
-                ss << std::hex << std::setw(2) << std::setfill('0') << (uint32_t)data[i];
-            }
-            std::cout << ss.str() << std::endl;
-        }
-        else
             printf("Error in write to %s! %d : %s and transferred = %d\n",
                    serial.c_str(), errno, strerror(errno), *transferred);
+        }
+        // else if (r == 0 && *transferred == length)
+        // {
+        //     printf("Write successful to %s, sent %d bytes : ", serial.c_str(), *transferred);
+        //     std::stringstream ss;
+        //     for (int i = 0; i < length; i++)
+        //     {
+        //         ss << std::hex << std::setw(2) << std::setfill('0') << (uint32_t)data[i];
+        //     }
+        //     std::cout << ss.str() << std::endl;
+        // }
+
 
         r = libusb_release_interface(_devices[serial], 0);
         if (r < 0)
