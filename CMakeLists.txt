@@ -76,7 +76,7 @@ pluginlib_export_plugin_description_file(hardware_interface plugins/robot_hardwa
 # Install
 ################################################################################
 install(
- DIRECTORY config description launch2 worlds
+ DIRECTORY config description launch2 meshes worlds
  DESTINATION share/${PROJECT_NAME}
 )
 
