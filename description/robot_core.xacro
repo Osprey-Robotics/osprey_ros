@@ -18,13 +18,14 @@
     <xacro:property name="ladder_width" value="${chassis_width}" />
     <xacro:property name="ladder_offset" value="${-chassis_length/2 - buckets_length/2 - 0.0127}" />
 
+    <xacro:property name="wheel_gap" value="0.0127" />
     <xacro:property name="wheel_length" value="0.1016" />
     <xacro:property name="wheel_radius" value="0.1524" />
     <xacro:property name="wheel_mesh_file" value="package://osprey_ros/meshes/wheel.dae" />
     <xacro:property name="wheel_mesh_scale" value="0.001 0.001 0.001" />
     <xacro:property name="wheel_offset_front" value="${-chassis_length/2 + 0.1778}" />
     <xacro:property name="wheel_offset_rear" value="${chassis_length/2 - 0.2286}" />
-    <xacro:property name="wheel_offset_side" value="${wheel_length/2 + chassis_width/2 + 0.0127}" />
+    <xacro:property name="wheel_offset_side" value="${wheel_length/2 + chassis_width/2 + wheel_gap}" />
 
     <link name="base_link"></link>
 
@@ -40,10 +41,10 @@
             </geometry>
         </collision>
         <visual>
+            <origin xyz="-${chassis_length/2} ${chassis_length/2 - chassis_height - wheel_gap/2} -${chassis_width/2}" rpy="${pi/2} 0 0"/>
             <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+                <mesh filename="package://osprey_ros/meshes/chassis.dae" scale="0.8 0.8 0.8" />
             </geometry>
-            <material name="blue"/>
         </visual>
         <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
             <origin xyz="${chassis_length/2} 0 0" rpy="0 0 0"/>
