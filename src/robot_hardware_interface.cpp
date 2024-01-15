@@ -1,8 +1,8 @@
 /** Copyright 2023 Osprey Robotics - UNF
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*/
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ */
 
 #include <chrono>
 #include <cmath>
@@ -16,6 +16,11 @@
 
 #include "robot_hardware_interface.hpp"
 #include "robot.hpp"
+
+const uint8_t LIMIT_SWITCHES = 5;
+const uint8_t RELAYS = 2;
+const uint8_t GPIO_IN = LIMIT_SWITCHES + RELAYS;
+const uint8_t GPIO_OUT = RELAYS;
 
 namespace robot_hardware_interface
 {
@@ -35,7 +40,10 @@ namespace robot_hardware_interface
         hw_stop_sec_ = std::stod(info_.hardware_parameters["hw_stop_duration_sec"]);
 
         // Resize vectors
+        hw_gpio_in_.resize(GPIO_IN);
+        hw_gpio_out_.resize(GPIO_OUT);
         hw_effort_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
+        hw_states_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_velocities_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
@@ -105,6 +113,43 @@ namespace robot_hardware_interface
                              hardware_interface::HW_IF_VELOCITY);
                 return hardware_interface::CallbackReturn::ERROR;
             }
+
+            if (info_.gpios.size() != 2)
+            {
+                RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
+                             "Found '%ld' GPIO components, '%d' expected.",
+                             info_.gpios.size(),
+                             2);
+                return hardware_interface::CallbackReturn::ERROR;
+            }
+
+            // outputs with exactly 1 command interface
+            if (info_.gpios[1].command_interfaces.size() != RELAYS)
+            {
+                RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
+                                "GPIO component %s has '%ld' command interfaces, '%d' expected.",
+                                info_.gpios[1].name.c_str(),
+                                info_.gpios[1].command_interfaces.size(),
+                                RELAYS);
+                return hardware_interface::CallbackReturn::ERROR;
+            }
+            // inputs/outputs state interfaces
+            size_t size = LIMIT_SWITCHES;
+            for (int i = 0; i < 2; i++)
+            {
+
+                if (info_.gpios[i].state_interfaces.size() != size)
+                {
+                    RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
+                                "GPIO component %s has '%ld' state interfaces, '%d' expected.",
+                                info_.gpios[i].name.c_str(),
+                                info_.gpios[i].state_interfaces.size(),
+                                size);
+                    return hardware_interface::CallbackReturn::ERROR;
+                }
+                // switch
+                size = RELAYS;
+            }
         }
 
         return hardware_interface::CallbackReturn::SUCCESS;
@@ -113,6 +158,8 @@ namespace robot_hardware_interface
     std::vector<hardware_interface::StateInterface> RobotSystemHardware::export_state_interfaces()
     {
         std::vector<hardware_interface::StateInterface> state_interfaces;
+
+        // joints
         for (auto i = 0u; i < info_.joints.size(); i++)
         {
             state_interfaces.emplace_back(
@@ -129,16 +176,34 @@ namespace robot_hardware_interface
             }
         }
 
+        // gpio
+        size_t ct = 0;
+        for (size_t i = 0; i < info_.gpios.size(); i++)
+        {
+            for (auto state_if : info_.gpios.at(i).state_interfaces)
+            {
+                state_interfaces.emplace_back(
+                    hardware_interface::StateInterface(info_.gpios.at(i).name,
+                                                       state_if.name,
+                                                       &hw_gpio_in_[ct++]));
+                RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
+                             "StateInterface Added %s/%s",
+                             info_.gpios.at(i).name.c_str(),
+                             state_if.name.c_str());
+            }
+        }
         return state_interfaces;
     }
 
     std::vector<hardware_interface::CommandInterface> RobotSystemHardware::export_command_interfaces()
     {
         std::vector<hardware_interface::CommandInterface> command_interfaces;
+
+        // joints
         for (auto i = 0u; i < info_.joints.size(); i++)
         {
-            if(info_.joints[i].name.find("wheel") != std::string::npos ||
-               info_.joints[i].name.find("buckets") != std::string::npos)
+            if (info_.joints[i].name.find("wheel") != std::string::npos ||
+                info_.joints[i].name.find("buckets") != std::string::npos)
             {
                 command_interfaces.emplace_back(
                     hardware_interface::CommandInterface(info_.joints[i].name,
@@ -151,6 +216,23 @@ namespace robot_hardware_interface
                     hardware_interface::CommandInterface(info_.joints[i].name,
                                                         hardware_interface::HW_IF_POSITION,
                                                         &hw_commands_[i]));
+            }
+        }
+
+        // gpio
+        size_t ct = 0;
+        for (size_t i = 0; i < info_.gpios.size(); i++)
+        {
+            for (auto command_if : info_.gpios.at(i).command_interfaces)
+            {
+                command_interfaces.emplace_back(
+                    hardware_interface::CommandInterface(info_.gpios.at(i).name,
+                                                         command_if.name,
+                                                         &hw_gpio_out_[ct++]));
+                RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
+                             "CommandInterface Added %s/%s",
+                             info_.gpios.at(i).name.c_str(),
+                             command_if.name.c_str());
             }
         }
 
