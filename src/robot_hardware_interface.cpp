@@ -206,8 +206,6 @@ namespace robot_hardware_interface
     hardware_interface::return_type RobotSystemHardware::read(
         const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
-        RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME), "Reading...");
-
         // for (std::size_t i = 0; i < hw_velocities_.size(); i++)
         // {
         //     osprey_robotics::Joint joint = robot_.getJoint(info_.joints[i].name);
@@ -219,30 +217,23 @@ namespace robot_hardware_interface
     hardware_interface::return_type robot_hardware_interface::RobotSystemHardware::write(
         const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
-        RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME), "Writing...");
-
         for (auto i = 0u; i < info_.joints.size(); i++)
         {
+            uint8_t duration = 1;
+
             osprey_robotics::Joint joint = robot_.getJoint(info_.joints[i].name);
-
-            double effort = hw_commands_[i]; // hw_commands_effort_[i];
-            uint8_t duration = 1;            // 15;
-
-            // Commands sent to hardware
-            RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-                         "Joint: %s, command %.5f",
-                        info_.joints[i].name.c_str(),
-                        hw_commands_[i]);
 
             hw_velocities_[i] = hw_commands_[i];
 
-            joint.actuate(effort, duration);
-
+            // Commands sent to hardware
             RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-                        "Joint: %s, position state: %.5f, velocity state: %.5f",
+                         "Joint: %s, command %.5f, position state: %.5f, velocity state: %.5f",
                         info_.joints[i].name.c_str(),
+                        hw_commands_[i],
                         hw_positions_[i],
                         hw_velocities_[i]);
+
+            joint.actuate(hw_commands_[i], duration);
         }
 
         return hardware_interface::return_type::OK;
