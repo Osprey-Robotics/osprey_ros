@@ -137,16 +137,19 @@ namespace robot_hardware_interface
         std::vector<hardware_interface::CommandInterface> command_interfaces;
         for (auto i = 0u; i < info_.joints.size(); i++)
         {
-            command_interfaces.emplace_back(
-                hardware_interface::CommandInterface(info_.joints[i].name,
-                                                    hardware_interface::HW_IF_POSITION,
-                                                    &hw_commands_[i]));
-            if(info_.joints[i].name.find("dump") == std::string::npos &&
-               info_.joints[i].name.find("lift") == std::string::npos)
+            if(info_.joints[i].name.find("wheel") != std::string::npos ||
+               info_.joints[i].name.find("buckets") != std::string::npos)
             {
                 command_interfaces.emplace_back(
                     hardware_interface::CommandInterface(info_.joints[i].name,
                                                         hardware_interface::HW_IF_VELOCITY,
+                                                        &hw_commands_[i]));
+            }
+            else
+            {
+                command_interfaces.emplace_back(
+                    hardware_interface::CommandInterface(info_.joints[i].name,
+                                                        hardware_interface::HW_IF_POSITION,
                                                         &hw_commands_[i]));
             }
         }
