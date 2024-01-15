@@ -22,12 +22,13 @@ endif()
 set(INCLUDE_DEPENDS
   PkgConfig
   hardware_interface
-  # control_msgs
-  # std_msgs
+  control_msgs
+  std_msgs
   pluginlib
   rclcpp
   rclcpp_lifecycle
-  # controller_interface
+  rosidl_runtime_cpp
+  controller_interface
   controller_manager
   joint_limits
 )
@@ -50,6 +51,11 @@ endif()
 
 include_directories(include)
 
+add_library(gpio_controller
+  SHARED
+  src/gpio_controller.cpp
+)
+
 add_library(robot_hardware_interface
   SHARED
   src/usb.cpp
@@ -62,6 +68,7 @@ add_executable(test-usb-motors
   src/test-usb-motors.cpp
 )
 
+ament_target_dependencies(gpio_controller ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot_hardware_interface ${INCLUDE_DEPENDS})
 
 target_link_libraries(robot_hardware_interface usb-1.0)
@@ -70,6 +77,7 @@ target_link_libraries(test-usb-motors robot_hardware_interface usb-1.0)
 ################################################################################
 # Plugin
 ################################################################################
+pluginlib_export_plugin_description_file(controller_interface plugins/gpio_controller.xml)
 pluginlib_export_plugin_description_file(hardware_interface plugins/robot_hardware_interface.xml)
 
 ################################################################################
@@ -78,6 +86,13 @@ pluginlib_export_plugin_description_file(hardware_interface plugins/robot_hardwa
 install(
  DIRECTORY config description launch2 meshes worlds
  DESTINATION share/${PROJECT_NAME}
+)
+
+install(TARGETS gpio_controller
+ EXPORT gpio_controller
+ ARCHIVE DESTINATION lib
+ LIBRARY DESTINATION lib
+ RUNTIME DESTINATION bin
 )
 
 install(TARGETS robot_hardware_interface
