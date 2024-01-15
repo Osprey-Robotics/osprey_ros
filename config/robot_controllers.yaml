@@ -5,6 +5,9 @@ controller_manager:
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
 
+    gpio_controller:
+      type: gpio_controller/GPIOController
+
     joint_position_controller:
       type: position_controllers/JointPositionController
 
@@ -28,6 +31,20 @@ diff_drive_controller:
     enable_odom_tf: true
 
     use_stamped_vel: false
+
+gpio_controller:
+  ros__parameters:
+    inputs:
+     - actuator/relay_1
+     - actuator/relay_2
+     - limit_switch/bucket_ladder_top
+     - limit_switch/bucket_ladder_bottom
+     - limit_switch/bucket_dump_front
+     - limit_switch/bucket_dump_back
+     - limit_switch/actuator_extended
+    outputs:
+     - actuator/relay_1
+     - actuator/relay_2
 
 joint_position_controller:
   ros__parameters:
