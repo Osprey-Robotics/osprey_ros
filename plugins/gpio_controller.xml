@@ -1,0 +1,9 @@
+<library path="gpio_controller">
+  <class name="gpio_controller/GPIOController"
+         type="gpio_controller::GPIOController"
+         base_class_type="controller_interface::ControllerInterface">
+    <description>
+      This controller publishes the GPIOs.
+    </description>
+  </class>
+</library>
