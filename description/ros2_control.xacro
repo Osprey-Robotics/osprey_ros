@@ -55,6 +55,19 @@
             </command_interface>
             <state_interface name="position" />
         </joint>
+        <gpio name="limit_switch">
+            <state_interface name="bucket_ladder_bottom"/>
+            <state_interface name="bucket_ladder_top"/>
+            <state_interface name="bucket_dump_front"/>
+            <state_interface name="bucket_dump_back"/>
+            <state_interface name="actuator_extended"/>
+        </gpio>
+        <gpio name="actuator">
+            <command_interface name="relay_1"/>
+            <command_interface name="relay_2"/>
+            <state_interface name="relay_1"/>
+            <state_interface name="relay_2"/>
+        </gpio>
     </ros2_control>
   </xacro:macro>
     <gazebo>
