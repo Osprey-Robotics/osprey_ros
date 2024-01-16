@@ -51,6 +51,11 @@ endif()
 
 include_directories(include)
 
+add_library(gpio
+  SHARED
+  src/gpio.cpp
+)
+
 add_library(gpio_controller
   SHARED
   src/gpio_controller.cpp
@@ -64,6 +69,14 @@ add_library(robot_hardware_interface
   src/robot_hardware_interface.cpp
 )
 
+add_executable(test-gpio-limit-switches
+  src/tests/test-gpio-limit-switches.cpp
+)
+
+add_executable(test-gpio-relays
+  src/tests/test-gpio-relays.cpp
+)
+
 add_executable(test-usb-motors
   src/test-usb-motors.cpp
 )
@@ -71,7 +84,9 @@ add_executable(test-usb-motors
 ament_target_dependencies(gpio_controller ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot_hardware_interface ${INCLUDE_DEPENDS})
 
-target_link_libraries(robot_hardware_interface usb-1.0)
+target_link_libraries(robot_hardware_interface gpio usb-1.0)
+target_link_libraries(test-gpio-limit-switches gpio)
+target_link_libraries(test-gpio-relays gpio)
 target_link_libraries(test-usb-motors robot_hardware_interface usb-1.0)
 
 ################################################################################
