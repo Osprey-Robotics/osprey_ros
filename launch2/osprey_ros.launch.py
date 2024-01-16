@@ -40,6 +40,12 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
+    gpio_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["gpio_controller", "-c", "/controller_manager"],
+    )
+
     diff_drive_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -94,6 +100,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         controller_manager,
+        gpio_controller_spawner,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
         delayed_diff_drive_spawner,
