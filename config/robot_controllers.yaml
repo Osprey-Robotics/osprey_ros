@@ -8,13 +8,13 @@ controller_manager:
     gpio_controller:
       type: gpio_controller/GPIOController
 
-    joint_position_controller:
-      type: position_controllers/JointPositionController
+    position_controllers:
+      type: position_controllers/JointGroupPositionController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-    joint_velocity_controller:
+    velocity_controllers:
       type: velocity_controllers/JointGroupVelocityController
 
 diff_drive_controller:
@@ -46,13 +46,13 @@ gpio_controller:
      - actuator/relay_1
      - actuator/relay_2
 
-joint_position_controller:
+position_controllers:
   ros__parameters:
     joints:
       - bucket_dump_joint
       - bucket_ladder_lift_joint
 
-joint_velocity_controller:
+velocity_controllers:
   ros__parameters:
     joints:
       - bucket_ladder_buckets_joint
