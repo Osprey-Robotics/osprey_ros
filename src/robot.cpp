@@ -38,6 +38,9 @@ namespace osprey_robotics
         base.joints[6] = Joint(7, SERIAL_DEPOSITION, ACTUATOR_TYPE_MOTOR);
         base.joints[6].name = "bucket_dump_joint";
         base.joints[6].usb = &usb;
+        base.joints[7] = Joint(8, "", ACTUATOR_TYPE_LINEAR);
+        base.joints[7].name = "bucket_ladder_frame_joint";
+        base.joints[7].usb = NULL;
     }
 
     Robot::~Robot()
