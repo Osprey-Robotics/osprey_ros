@@ -38,7 +38,7 @@ namespace osprey_robotics
             /**
              * @brief Represents the robot
              */
-            Segment<7> base;
+            Segment<8> base;
 
             /**
              * @brief Get a Joint object by name
