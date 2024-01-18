@@ -10,7 +10,7 @@
 #include <cstddef>
 #include <cstdint>
 
-const char *LIMIT_BUCKET_LADDER_TOP = "8";
+const char *LIMIT_BUCKET_LADDER_TOP = "9";
 const char *LIMIT_BUCKET_LADDER_BOTTOM = "10";
 const char *LIMIT_DEPOSITION_FORWARD = "5";
 const char *LIMIT_ACTUATOR_EXTENDED = "12";
