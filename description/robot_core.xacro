@@ -9,6 +9,10 @@
     <xacro:property name="bucket_height" value="0.254" />
     <xacro:property name="bucket_width" value="0.254" />
 
+    <xacro:property name="bucket_ladder_scale" value="0.9 0.9 0.9" />
+    <xacro:property name="bucket_ladder_rpy" value="${pi/2} ${pi/2} 0" />
+    <xacro:property name="bucket_ladder_xyz" value="-${buckets_length/2 + ladder_length} ${ladder_width - wheel_gap*2.5} ${buckets_height - wheel_radius}" />
+
     <xacro:property name="buckets_length" value="0.254" /> <!-- depth -->
     <xacro:property name="buckets_height" value="0.9144" />
     <xacro:property name="buckets_width" value="0.1778" />
@@ -171,9 +175,9 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="${buckets_length/1.25} ${ladder_width - wheel_gap*2.5} -${buckets_width/2}" rpy="${pi/2} -${pi/2} 0"/>
+            <origin xyz="${bucket_ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
             <geometry>
-                <mesh filename="package://osprey_ros/meshes/bucket_ladder_guide_frame.dae" scale="0.9 0.9 0.9" />
+                <mesh filename="package://osprey_ros/meshes/bucket_ladder_guide_frame.dae" scale="${bucket_ladder_scale}" />
             </geometry>
             <material name="green"/>
         </visual>
@@ -198,9 +202,9 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="${buckets_length/1.25} ${ladder_width - wheel_gap*2.5} -${buckets_width/2}" rpy="${pi/2} -${pi/2} 0"/>
+            <origin xyz="${bucket_ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
             <geometry>
-                <mesh filename="package://osprey_ros/meshes/bucket_ladder_lift_frame.dae" scale="0.9 0.9 0.9" />
+                <mesh filename="package://osprey_ros/meshes/bucket_ladder_lift_frame.dae" scale="${bucket_ladder_scale}" />
             </geometry>
             <material name="green"/>
         </visual>
@@ -223,9 +227,9 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="${buckets_length/1.25} ${ladder_width - wheel_gap*2.5} -${buckets_width/2}" rpy="${pi/2} -${pi/2} 0"/>
+            <origin xyz="${bucket_ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
             <geometry>
-                <mesh filename="package://osprey_ros/meshes/bucket_ladder_gears.dae" scale="0.9 0.9 0.9" />
+                <mesh filename="package://osprey_ros/meshes/bucket_ladder_gears.dae" scale="${bucket_ladder_scale}" />
             </geometry>
             <material name="red"/>
         </visual>
