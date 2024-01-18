@@ -50,6 +50,7 @@ position_controllers:
   ros__parameters:
     joints:
       - bucket_dump_joint
+      - bucket_ladder_frame_joint
       - bucket_ladder_lift_joint
 
 velocity_controllers:
