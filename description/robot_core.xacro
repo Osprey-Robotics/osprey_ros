@@ -155,6 +155,33 @@
         </xacro:inertial_cylinder>
     </link>
 
+    <!-- Bucket Ladder Guide Frame -->
+    <joint name="bucket_ladder_frame_joint" type="prismatic">
+        <parent link="base_link"/>
+        <child link="guide_frame"/>
+        <limit lower="0"  upper="1"  velocity="0.1"  effort="${limit_effort}"  />
+        <axis xyz="0 0 1"/>
+        <origin xyz="${ladder_offset} 0 0" rpy="0 0 0"/>
+    </joint>
+    <link name="guide_frame">
+        <collision>
+            <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
+            <geometry>
+                <box size="${ladder_length} ${ladder_width} ${ladder_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="${buckets_length/1.25} ${ladder_width - wheel_gap*2.5} -${buckets_width/2}" rpy="${pi/2} -${pi/2} 0"/>
+            <geometry>
+                <mesh filename="package://osprey_ros/meshes/bucket_ladder_guide_frame.dae" scale="0.9 0.9 0.9" />
+            </geometry>
+            <material name="green"/>
+        </visual>
+        <xacro:inertial_box mass="0.5" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
+            <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
     <!-- Bucket Ladder Lift -->
     <joint name="bucket_ladder_lift_joint" type="prismatic">
         <parent link="base_link"/>
