@@ -3,9 +3,10 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch.event_handlers import OnProcessStart
+from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 
 import xacro
@@ -13,14 +14,32 @@ import xacro
 
 def generate_launch_description():
 
+    declared_arguments = []
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "sim",
+            default_value="false",
+            description="Start with simulated mock hardware",
+        )
+    )
+
     pkg_name = 'osprey_ros'
     filename = 'robot.urdf.xacro'
 
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
     controller_params = os.path.join(pkg_path, 'config', 'robot_controllers.yaml')
     xacro_file = os.path.join(pkg_path,'description',filename)
-    robot_description_config = xacro.process_file(xacro_file)
-    robot_description = {'robot_description': robot_description_config.toxml()}
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            xacro_file,
+            " ",
+            "use_mock_hardware:=",
+            LaunchConfiguration("sim"),
+        ]
+    )
+    robot_description = {'robot_description': robot_description_content}
 
     controller_manager = Node(
         package='controller_manager',
@@ -98,7 +117,7 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription([
+    return LaunchDescription(declared_arguments + [
         controller_manager,
         gpio_controller_spawner,
         node_robot_state_publisher,
