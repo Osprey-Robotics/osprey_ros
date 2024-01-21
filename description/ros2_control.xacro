@@ -11,9 +11,7 @@
         </xacro:unless>
         <xacro:if value="${use_mock_hardware}">
             <hardware>
-                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-                <!-- <plugin>mock_components/GenericSystem</plugin>
-                <param name="calculate_dynamics">true</param> -->
+                <plugin>mock_components/GenericSystem</plugin>
             </hardware>
         </xacro:if>
         <joint name="front_left_wheel_joint">
