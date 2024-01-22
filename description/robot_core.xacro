@@ -29,7 +29,7 @@
     <xacro:property name="wheel_gap" value="0.0127" />
     <xacro:property name="wheel_length" value="0.1016" />
     <xacro:property name="wheel_radius" value="0.1524" />
-    <xacro:property name="wheel_mesh_file" value="package://osprey_ros/meshes/wheel.dae" />
+    <xacro:property name="wheel_mesh_file" value="file://$(find osprey_ros)/meshes/wheel.dae" />
     <xacro:property name="wheel_mesh_scale" value="0.001 0.001 0.001" />
     <xacro:property name="wheel_offset_front" value="${-chassis_length/2 + 0.1778}" />
     <xacro:property name="wheel_offset_rear" value="${chassis_length/2 - 0.2286}" />
@@ -51,7 +51,7 @@
         <visual>
             <origin xyz="-${chassis_length/2 + chassis_height/2} ${chassis_length/2 - chassis_height - wheel_gap/2} -${chassis_width/2}" rpy="${pi/2} 0 0"/>
             <geometry>
-                <mesh filename="package://osprey_ros/meshes/chassis.dae" scale="0.8 0.8 0.8" />
+                <mesh filename="file://$(find osprey_ros)/meshes/chassis.dae" scale="0.8 0.8 0.8" />
             </geometry>
         </visual>
         <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
@@ -177,7 +177,7 @@
         <visual>
             <origin xyz="${bucket_ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
             <geometry>
-                <mesh filename="package://osprey_ros/meshes/bucket_ladder_guide_frame.dae" scale="${bucket_ladder_scale}" />
+                <mesh filename="file://$(find osprey_ros)/meshes/bucket_ladder_guide_frame.dae" scale="${bucket_ladder_scale}" />
             </geometry>
             <material name="green"/>
         </visual>
@@ -204,7 +204,7 @@
         <visual>
             <origin xyz="${bucket_ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
             <geometry>
-                <mesh filename="package://osprey_ros/meshes/bucket_ladder_lift_frame.dae" scale="${bucket_ladder_scale}" />
+                <mesh filename="file://$(find osprey_ros)/meshes/bucket_ladder_lift_frame.dae" scale="${bucket_ladder_scale}" />
             </geometry>
             <material name="green"/>
         </visual>
@@ -229,7 +229,7 @@
         <visual>
             <origin xyz="${bucket_ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
             <geometry>
-                <mesh filename="package://osprey_ros/meshes/bucket_ladder_gears.dae" scale="${bucket_ladder_scale}" />
+                <mesh filename="file://$(find osprey_ros)/meshes/bucket_ladder_gears.dae" scale="${bucket_ladder_scale}" />
             </geometry>
             <material name="red"/>
         </visual>
@@ -254,7 +254,7 @@
         <visual>
             <origin xyz="-${bucket_length/2} ${bucket_length/2} -${chassis_height}" rpy="${pi/2} 0 0"/>
             <geometry>
-                <mesh filename="package://osprey_ros/meshes/dump_bucket_body.dae" scale="0.065 0.065 0.065" />
+                <mesh filename="file://$(find osprey_ros)/meshes/dump_bucket_body.dae" scale="0.065 0.065 0.065" />
             </geometry>
         </visual>
         <xacro:inertial_box mass="0.5" x="${bucket_length}" y="${bucket_width}" z="${bucket_height}">
