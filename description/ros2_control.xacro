@@ -16,62 +16,102 @@
         </xacro:if>
         <joint name="front_left_wheel_joint">
             <command_interface name="velocity" />
-            <state_interface name="position" />
-            <state_interface name="velocity" />
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
         </joint>
         <joint name="front_right_wheel_joint">
             <command_interface name="velocity" />
-            <state_interface name="position" />
-            <state_interface name="velocity" />
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
         </joint>
         <joint name="rear_left_wheel_joint">
             <command_interface name="velocity" />
-            <state_interface name="position" />
-            <state_interface name="velocity" />
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
         </joint>
         <joint name="rear_right_wheel_joint">
             <command_interface name="velocity" />
-            <state_interface name="position" />
-            <state_interface name="velocity" />
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
         </joint>
         <joint name="bucket_ladder_frame_joint">
             <command_interface name="position">
                 <param name="min">0</param>
                 <param name="max">1</param>
             </command_interface>
-            <state_interface name="position" />
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
         </joint>
         <joint name="bucket_ladder_lift_joint">
             <command_interface name="position">
                 <param name="min">-1</param>
                 <param name="max">1</param>
             </command_interface>
-            <state_interface name="position" />
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
         </joint>
         <joint name="bucket_ladder_buckets_joint">
             <command_interface name="velocity" />
-            <state_interface name="position" />
-            <state_interface name="velocity" />
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
         </joint>
         <joint name="bucket_dump_joint">
             <command_interface name="position">
                 <param name="min">-1</param>
                 <param name="max">1</param>
             </command_interface>
-            <state_interface name="position" />
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
         </joint>
         <gpio name="limit_switch">
-            <state_interface name="bucket_ladder_bottom"/>
-            <state_interface name="bucket_ladder_top"/>
-            <state_interface name="bucket_dump_front"/>
-            <state_interface name="bucket_dump_back"/>
-            <state_interface name="actuator_extended"/>
+            <state_interface name="bucket_ladder_bottom">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="bucket_ladder_top">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="bucket_dump_front">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="bucket_dump_back">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="actuator_extended">
+                <param name="initial_value">0</param>
+            </state_interface>
         </gpio>
         <gpio name="actuator">
             <command_interface name="relay_1"/>
             <command_interface name="relay_2"/>
-            <state_interface name="relay_1"/>
-            <state_interface name="relay_2"/>
+            <state_interface name="relay_1">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="relay_2">
+                <param name="initial_value">0</param>
+            </state_interface>
         </gpio>
     </ros2_control>
   </xacro:macro>
