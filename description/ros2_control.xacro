@@ -11,6 +11,7 @@
         </xacro:unless>
         <xacro:if value="${use_mock_hardware}">
             <hardware>
+                <!-- <plugin>gazebo_ros2_control/GazeboSystem</plugin> -->
                 <plugin>mock_components/GenericSystem</plugin>
             </hardware>
         </xacro:if>
@@ -116,7 +117,7 @@
     </ros2_control>
   </xacro:macro>
     <gazebo>
-        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
             <robot_param>robot_description</robot_param>
             <robot_param_node>robot_state_publisher</robot_param_node>
             <parameters>$(find osprey_ros)/config/robot_controllers.yaml</parameters>
