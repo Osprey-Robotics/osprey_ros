@@ -15,7 +15,6 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include "robot_hardware_interface.hpp"
-#include "robot.hpp"
 
 const uint8_t LIMIT_SWITCHES = 5;
 const uint8_t RELAYS = 2;
