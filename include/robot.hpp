@@ -24,6 +24,12 @@ const char *LIMIT_DEPOSITION_BACK = "13";
 const char *RELAY_1 = "26";
 const char *RELAY_2 = "20";
 
+// GPIO sizes for hardware interface
+const uint8_t LIMIT_SWITCHES = 5;
+const uint8_t RELAYS = 2;
+const uint8_t GPIO_IN = LIMIT_SWITCHES + RELAYS;
+const uint8_t GPIO_OUT = RELAYS;
+
 // motor USB serial numbers
 const std::string SERIAL_FRONT_LEFT_1 = "206D33614D43";
 const std::string SERIAL_BACK_LEFT_2 = "2061376C4243";
