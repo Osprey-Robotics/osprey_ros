@@ -61,11 +61,15 @@ add_library(gpio_controller
   src/gpio_controller.cpp
 )
 
-add_library(robot_hardware_interface
+add_library(robot
   SHARED
   src/usb.cpp
   src/joint.cpp
   src/robot.cpp
+)
+
+add_library(robot_hardware_interface
+  SHARED
   src/robot_hardware_interface.cpp
 )
 
@@ -84,10 +88,10 @@ add_executable(test-usb-motors
 ament_target_dependencies(gpio_controller ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot_hardware_interface ${INCLUDE_DEPENDS})
 
-target_link_libraries(robot_hardware_interface gpio usb-1.0)
-target_link_libraries(test-gpio-limit-switches gpio)
-target_link_libraries(test-gpio-relays gpio)
-target_link_libraries(test-usb-motors robot_hardware_interface usb-1.0)
+target_link_libraries(robot_hardware_interface gpio robot usb-1.0)
+target_link_libraries(test-gpio-limit-switches gpio robot)
+target_link_libraries(test-gpio-relays gpio robot)
+target_link_libraries(test-usb-motors robot usb-1.0)
 
 ################################################################################
 # Plugin
