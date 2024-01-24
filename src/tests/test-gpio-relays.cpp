@@ -3,7 +3,7 @@
 #include <cstring>
 #include <unistd.h>
 
-#include "gpio.hpp"
+#include "robot.hpp"
 
 /**
  * @brief Test program to run the USB motors at various speeds
