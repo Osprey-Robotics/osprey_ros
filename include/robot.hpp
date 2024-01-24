@@ -13,6 +13,17 @@
 
 extern const char *CLASS_NAME;
 
+// limit switch GPIO pin numbers
+const char *LIMIT_BUCKET_LADDER_TOP = "9";
+const char *LIMIT_BUCKET_LADDER_BOTTOM = "10";
+const char *LIMIT_DEPOSITION_FORWARD = "5";
+const char *LIMIT_ACTUATOR_EXTENDED = "12";
+const char *LIMIT_DEPOSITION_BACK = "13";
+
+// relay GPIO pin numbers
+const char *RELAY_1 = "26";
+const char *RELAY_2 = "20";
+
 namespace osprey_robotics
 {
     /**
