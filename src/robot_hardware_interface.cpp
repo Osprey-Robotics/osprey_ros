@@ -16,11 +16,6 @@
 
 #include "robot_hardware_interface.hpp"
 
-const uint8_t LIMIT_SWITCHES = 5;
-const uint8_t RELAYS = 2;
-const uint8_t GPIO_IN = LIMIT_SWITCHES + RELAYS;
-const uint8_t GPIO_OUT = RELAYS;
-
 namespace robot_hardware_interface
 {
     hardware_interface::CallbackReturn RobotSystemHardware::on_init(
