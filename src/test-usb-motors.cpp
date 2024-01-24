@@ -4,8 +4,7 @@
 #include <unistd.h>
 #include <vector>
 
-#include "joint.hpp"
-#include "usb.hpp"
+#include "robot.hpp"
 
 extern unsigned char SPEED[];
 extern unsigned char ACTUATE[];
