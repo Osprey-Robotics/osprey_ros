@@ -24,6 +24,15 @@ const char *LIMIT_DEPOSITION_BACK = "13";
 const char *RELAY_1 = "26";
 const char *RELAY_2 = "20";
 
+// motor USB serial numbers
+const std::string SERIAL_FRONT_LEFT_1 = "206D33614D43";
+const std::string SERIAL_BACK_LEFT_2 = "2061376C4243";
+const std::string SERIAL_FRONT_RIGHT_3 = "206B336B4E55";
+const std::string SERIAL_BACK_RIGHT_4 = "205A336B4E55";
+const std::string SERIAL_LADDER_DIG = "206A33544D43";
+const std::string SERIAL_LADDER_LIFT = "206C395A5543";
+const std::string SERIAL_DEPOSITION = "205D39515543";
+
 namespace osprey_robotics
 {
     /**
