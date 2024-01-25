@@ -23,9 +23,11 @@ set(INCLUDE_DEPENDS
   PkgConfig
   hardware_interface
   control_msgs
+  sensor_msgs
   std_msgs
   pluginlib
   rclcpp
+  rclcpp_components
   rclcpp_lifecycle
   rosidl_runtime_cpp
   controller_interface
@@ -73,6 +75,15 @@ add_library(robot_hardware_interface
   src/robot_hardware_interface.cpp
 )
 
+add_library(teleop_manual_joy
+  SHARED
+  src/teleop_manual_joy.cpp
+)
+
+add_executable(teleop_manual_joy_node
+  src/teleop_manual_joy_node.cpp
+)
+
 add_executable(test-gpio-limit-switches
   src/tests/test-gpio-limit-switches.cpp
 )
@@ -87,11 +98,15 @@ add_executable(test-usb-motors
 
 ament_target_dependencies(gpio_controller ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot_hardware_interface ${INCLUDE_DEPENDS})
+ament_target_dependencies(teleop_manual_joy ${INCLUDE_DEPENDS})
 
 target_link_libraries(robot_hardware_interface gpio robot usb-1.0)
+target_link_libraries(teleop_manual_joy_node teleop_manual_joy)
 target_link_libraries(test-gpio-limit-switches gpio robot)
 target_link_libraries(test-gpio-relays gpio robot)
 target_link_libraries(test-usb-motors robot usb-1.0)
+
+rclcpp_components_register_nodes(teleop_manual_joy "teleop_manual_joy::TeleopManualJoy")
 
 ################################################################################
 # Plugin
@@ -107,19 +122,23 @@ install(
  DESTINATION share/${PROJECT_NAME}
 )
 
-install(TARGETS gpio_controller
- EXPORT gpio_controller
- ARCHIVE DESTINATION lib
- LIBRARY DESTINATION lib
- RUNTIME DESTINATION bin
+set(INSTALL_TARGETS
+  gpio_controller
+  robot
+  robot_hardware_interface
+  teleop_manual_joy
+  teleop_manual_joy_node
 )
 
-install(TARGETS robot_hardware_interface
- EXPORT robot_hardware_interface
- ARCHIVE DESTINATION lib
- LIBRARY DESTINATION lib
- RUNTIME DESTINATION bin
-)
+foreach(target IN ITEMS ${INSTALL_TARGETS})
+  install(TARGETS ${target}
+    EXPORT ${target}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
+  )
+endforeach()
+
 ################################################################################
 # Macro for ament package
 ################################################################################
