@@ -7,8 +7,11 @@
 #ifndef TELEOP_MANUAL_JOY__TELEOP_MANUAL_JOY_HPP_
 #define TELEOP_MANUAL_JOY__TELEOP_MANUAL_JOY_HPP_
 
+#include "geometry_msgs/msg/twist.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/node_options.hpp"
+#include "sensor_msgs/msg/joy.hpp"
+#include "std_msgs/msg/float64_multi_array.hpp"
 #include "std_msgs/msg/string.hpp"
 
 namespace teleop_manual_joy
@@ -20,6 +23,39 @@ namespace teleop_manual_joy
     class TeleopManualJoy : public rclcpp::Node
     {
         public:
+
+            /**
+             * @brief DPad and Joystick axises on the Logitech F310 gamepad
+             */
+            enum axises
+            {
+                LEFT_JOY_X,
+                LEFT_JOY_Y,
+                RIGHT_JOY_X,
+                RIGHT_JOY_Y,
+                DPAD_X,
+                DPAD_Y
+            };
+
+            /**
+             * @brief Buttons on the Logitech F310 gamepad
+             */
+            enum buttons
+            {
+                X,
+                A,
+                B,
+                Y,
+                LEFT_BUMPER,
+                RIGHT_BUMPER,
+                LEFT_TRIGGER,
+                RIGHT_TRIGGER,
+                BACK,
+                START,
+                LEFT_JOY_CLICK,
+                RIGHT_JOY_CLICK
+            };
+
             /**
              * @brief Construct a new Teleop Manual Joy instance
              * 
@@ -35,30 +71,26 @@ namespace teleop_manual_joy
 
         private:
             size_t count_;
+
             // publishers - topics we publish commands to; cmd_vel, gpio, positions, and velocities
-            rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_cmd_vel_;
+            rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_cmd_vel_;
             rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_gpio_;
-            rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_pos_;
-            rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_vel_;
+            rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_pos_;
+            rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_vel_;
 
             // subscriber - the joy topic we listen to for joystick buttons
-            rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+            rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr subscription_;
 
             // timer for publishing messages to publishers, master timer for all
             rclcpp::TimerBase::SharedPtr timer_;
 
             /**
-             * @brief Callback function for the timer, called on the timer interval
-             */
-            void timer_callback();
-
-            /**
              * @brief Callback function for subscription fired when messages
-             *        on the topic are heard
+             *        on the joy topic are heard
              * 
              * @param msg the message data that was heard
              */
-            void topic_callback(const std_msgs::msg::String & msg) const;
+            void joyCallback(const sensor_msgs::msg::Joy::SharedPtr joy_msg);
     };
 }
 
