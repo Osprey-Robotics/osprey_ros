@@ -18,37 +18,29 @@ namespace teleop_manual_joy
         : Node("teleop_manual_joy"), count_(0)
     {
         // publish to controller specific topics, may combine into unified
-        publisher_cmd_vel_ = this->create_publisher<std_msgs::msg::String>("cmd_vel", 10);
+        publisher_cmd_vel_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
         publisher_gpio_ = this->create_publisher<std_msgs::msg::String>("gpio_controller/commands", 10);
-        publisher_pos_ = this->create_publisher<std_msgs::msg::String>("position_controllers/commands", 10);
-        publisher_vel_ = this->create_publisher<std_msgs::msg::String>("velocity_controllers/commands", 10);
+        publisher_pos_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("position_controllers/commands", 10);
+        publisher_vel_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("velocity_controllers/commands", 10);
 
         // subscribe to /joy topic for joystick messages
-        subscription_ = this->create_subscription<std_msgs::msg::String>(
-            "joy", rclcpp::QoS(10), std::bind(&TeleopManualJoy::topic_callback, this, _1));
-
-        timer_ = this->create_wall_timer(500ms,
-                                         std::bind(&TeleopManualJoy::timer_callback,
-                                         this));
+        subscription_ = this->create_subscription<sensor_msgs::msg::Joy>(
+            "joy", rclcpp::QoS(10), std::bind(&TeleopManualJoy::joyCallback, this, _1));
     }
 
     TeleopManualJoy::~TeleopManualJoy()
     {
     }
 
-    void TeleopManualJoy::timer_callback()
+    void TeleopManualJoy::joyCallback(const sensor_msgs::msg::Joy::SharedPtr joy_msg)
     {
-        auto message = std_msgs::msg::String();
-        message.data = "Message Data" + std::to_string(count_++);
-        RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-        publisher_cmd_vel_->publish(message);
-        publisher_gpio_->publish(message);
-        publisher_pos_->publish(message);
-        publisher_vel_->publish(message);
-    }
+        // Initializes with zeros by default.
+        auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
 
-    void TeleopManualJoy::topic_callback(const std_msgs::msg::String & msg) const
-    {
-        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.data.c_str());
+        // inverse mapping, y is forward/backward, and x is left/right
+        cmd_vel_msg->linear.x = joy_msg->axes[TeleopManualJoy::axises::LEFT_JOY_Y];
+        cmd_vel_msg->linear.y = joy_msg->axes[TeleopManualJoy::axises::LEFT_JOY_X];
+
+        publisher_cmd_vel_->publish(std::move(cmd_vel_msg));
     }
 }
