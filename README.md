@@ -35,6 +35,21 @@ You may want to have your development user environment do this on login via `~/.
 source ~/ros2_ws/install/setup.bash
 ```
 
+## Docker Development Environment
+Two docker development environments are available for portable development and
+simulation. This requires docker to be installed on either Linux or Windows; Windows is untested. Of the two options, most will use the second option, the first will primarily be used within this repository for CI. Instructions for usage is
+provide within each of the respective repositories readme.
+
+### docker-ros2-iron image
+The first environment is the [docker-ros2-iron](https://github.com/Osprey-Robotics/docker-ros2-iron) image, which contains the base headless environment and
+minimum packages needed to build and run `opsrey_ros` package.
+
+### docker-ros2-iron-gz-rviz2 image
+The first environment is the [docker-ros2-iron-gz-rviz2](https://github.com/Osprey-Robotics/docker-ros2-iron-gz-rviz2) image, which uses and builds on the
+previous base image with packages for graphical simulation, gazebo and rviz2.
+This is the primary image most will want to use for simulation testing of the
+robot and/or sensors.
+
 ## Run
 To run on the actual hardware run the following command in your ros2 workspace; ex `~/ros2_ws/`.
 ```bash
