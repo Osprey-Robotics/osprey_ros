@@ -37,9 +37,8 @@ namespace teleop_manual_joy
         // Initializes with zeros by default.
         auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
 
-        // inverse mapping, y is forward/backward, and x is left/right
-        cmd_vel_msg->linear.x = joy_msg->axes[TeleopManualJoy::axises::LEFT_JOY_Y];
-        cmd_vel_msg->linear.y = joy_msg->axes[TeleopManualJoy::axises::LEFT_JOY_X];
+        cmd_vel_msg->linear.x = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_Y];
+        cmd_vel_msg->angular.z = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_X];
 
         publisher_cmd_vel_->publish(std::move(cmd_vel_msg));
     }
