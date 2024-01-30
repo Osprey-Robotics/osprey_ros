@@ -25,9 +25,9 @@ namespace teleop_manual_joy
         public:
 
             /**
-             * @brief DPad and Joystick axises on the Logitech F310 gamepad
+             * @brief DPad and Joystick axes on the Logitech F310 gamepad
              */
-            enum axises
+            enum axes
             {
                 LEFT_JOY_X,
                 LEFT_JOY_Y,
