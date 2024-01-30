@@ -37,8 +37,9 @@ namespace teleop_manual_joy
         // Initializes with zeros by default.
         auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
 
-        cmd_vel_msg->linear.x = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_Y];
-        cmd_vel_msg->angular.z = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_X];
+        // should move hard coded value to configuration file
+        cmd_vel_msg->linear.x = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_Y] * 7.612;
+        cmd_vel_msg->angular.z = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_X] * 7.612;
 
         publisher_cmd_vel_->publish(std::move(cmd_vel_msg));
     }
