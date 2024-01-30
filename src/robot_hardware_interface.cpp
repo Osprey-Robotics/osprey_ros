@@ -299,6 +299,9 @@ namespace robot_hardware_interface
 
             osprey_robotics::Joint joint = robot_.getJoint(info_.joints[i].name);
 
+            if (info_.joints[i].name.find("right_wheel") != std::string::npos)
+                hw_commands_[i] = -hw_commands_[i];
+
             hw_velocities_[i] = hw_commands_[i];
 
             // Commands sent to hardware
