@@ -36,7 +36,6 @@ namespace robot_hardware_interface
         // Resize vectors
         hw_gpio_in_.resize(GPIO_IN);
         hw_gpio_out_.resize(GPIO_OUT);
-        hw_effort_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_states_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
@@ -250,7 +249,6 @@ namespace robot_hardware_interface
         {
             if (std::isnan(hw_positions_[i]))
             {
-                hw_effort_[i] = 0;
                 hw_positions_[i] = 0;
                 hw_velocities_[i] = 0;
                 hw_commands_[i] = 0;
