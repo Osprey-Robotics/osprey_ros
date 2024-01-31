@@ -31,8 +31,10 @@ namespace teleop_manual_joy
             {
                 LEFT_JOY_X,
                 LEFT_JOY_Y,
+                LEFT_TRIGGER,
                 RIGHT_JOY_X,
                 RIGHT_JOY_Y,
+                RIGHT_TRIGGER,
                 DPAD_X,
                 DPAD_Y
             };
@@ -42,16 +44,15 @@ namespace teleop_manual_joy
              */
             enum buttons
             {
-                X,
                 A,
                 B,
+                X,
                 Y,
                 LEFT_BUMPER,
                 RIGHT_BUMPER,
-                LEFT_TRIGGER,
-                RIGHT_TRIGGER,
                 BACK,
                 START,
+                CENTER,
                 LEFT_JOY_CLICK,
                 RIGHT_JOY_CLICK
             };
