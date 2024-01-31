@@ -44,10 +44,83 @@ namespace teleop_manual_joy
         publisher_cmd_vel_->publish(std::move(cmd_vel_msg));
 
         // Initializes with zeros by default.
-        auto vel_msg = std::make_unique<std_msgs::msg::Float64MultiArray>();
+        auto pos_msg = std::make_unique<std_msgs::msg::Float64MultiArray>();
+        pos_msg->data.resize(3);
 
         // should move hard coded value to configuration file
-        vel_msg->data.push_back(joy_msg->buttons[TeleopManualJoy::buttons::LEFT_BUMPER] * -45.0);
+        if (joy_msg->buttons[TeleopManualJoy::buttons::A])
+        {
+            // dump bucket forward
+            pos_msg->data[0] = joy_msg->buttons[TeleopManualJoy::buttons::A] * -30.0;
+        }
+        else if (joy_msg->buttons[TeleopManualJoy::buttons::B])
+        {
+            // dump bucket backward
+            pos_msg->data[0] = joy_msg->buttons[TeleopManualJoy::buttons::B] * -30.0;
+        }
+        else
+        {
+            // dump bucket stop
+            pos_msg->data[0] = 0;
+        }
+
+        // should move hard coded value to configuration file
+        if (joy_msg->buttons[TeleopManualJoy::buttons::X])
+        {
+            // linear actuator forward
+            pos_msg->data[1] = joy_msg->buttons[TeleopManualJoy::buttons::X] * -30.0;
+        }
+        else if (joy_msg->buttons[TeleopManualJoy::buttons::Y])
+        {
+            // linear actuator backward
+            pos_msg->data[1] = joy_msg->buttons[TeleopManualJoy::buttons::Y] * 30.0;
+        }
+        else
+        {
+            // linear actuator stop
+            pos_msg->data[1] = 0;
+        }
+
+        // should move hard coded value to configuration file
+        if (joy_msg->buttons[TeleopManualJoy::buttons::LEFT_BUMPER])
+        {
+            // bucket ladder up
+            pos_msg->data[2] = joy_msg->buttons[TeleopManualJoy::buttons::LEFT_BUMPER] * 30.0;
+        }
+        else if (joy_msg->buttons[TeleopManualJoy::buttons::RIGHT_BUMPER])
+        {
+            // bucket ladder down
+            pos_msg->data[2] = joy_msg->buttons[TeleopManualJoy::buttons::RIGHT_BUMPER] * -30.0;
+        }
+        else
+        {
+            // bucket ladder stop
+            pos_msg->data[2] = 0;
+        }
+
+        publisher_pos_->publish(std::move(pos_msg));
+
+        // Initializes with zeros by default.
+        auto vel_msg = std::make_unique<std_msgs::msg::Float64MultiArray>();
+        vel_msg->data.resize(1);
+
+        // should move hard coded value to configuration file
+        if (joy_msg->axes[TeleopManualJoy::axes::LEFT_TRIGGER] < 0)
+        {
+            // bucket ladder buckets forward
+            vel_msg->data[0] = joy_msg->axes[TeleopManualJoy::axes::LEFT_TRIGGER] * -45.0;
+        }
+        else 
+        if (joy_msg->axes[TeleopManualJoy::axes::RIGHT_TRIGGER] < 0)
+        {
+            // bucket ladder buckets reverse
+            vel_msg->data[0] = joy_msg->axes[TeleopManualJoy::axes::RIGHT_TRIGGER] * 45.0;
+        }
+        else
+        {
+            // bucket ladder buckets stop
+            vel_msg->data[0] = 0;
+        }
 
         publisher_vel_->publish(std::move(vel_msg));
 
