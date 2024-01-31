@@ -60,7 +60,6 @@ namespace robot_hardware_interface
             osprey_robotics::Robot robot_;
             std::vector<double> hw_gpio_in_;
             std::vector<double> hw_gpio_out_;
-            std::vector<double> hw_effort_;
             std::vector<double> hw_commands_;
             std::vector<double> hw_positions_;
             std::vector<double> hw_states_;
