@@ -42,5 +42,14 @@ namespace teleop_manual_joy
         cmd_vel_msg->angular.z = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_X] * 7.612;
 
         publisher_cmd_vel_->publish(std::move(cmd_vel_msg));
+
+        // Initializes with zeros by default.
+        auto vel_msg = std::make_unique<std_msgs::msg::Float64MultiArray>();
+
+        // should move hard coded value to configuration file
+        vel_msg->data.push_back(joy_msg->buttons[TeleopManualJoy::buttons::LEFT_BUMPER] * -45.0);
+
+        publisher_vel_->publish(std::move(vel_msg));
+
     }
 }
