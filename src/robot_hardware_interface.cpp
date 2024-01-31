@@ -135,7 +135,7 @@ namespace robot_hardware_interface
                 if (info_.gpios[i].state_interfaces.size() != size)
                 {
                     RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
-                                "GPIO component %s has '%ld' state interfaces, '%d' expected.",
+                                "GPIO component %s has '%ld' state interfaces, '%ld' expected.",
                                 info_.gpios[i].name.c_str(),
                                 info_.gpios[i].state_interfaces.size(),
                                 size);
