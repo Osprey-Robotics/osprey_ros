@@ -79,9 +79,6 @@ namespace osprey_robotics
             usb->bulkWrite(this->serial_, MOTOR_USB_ENDPOINT, SPEED, sizeof(SPEED), &transferred, 1000);
             // activate motor
             usb->bulkWrite(this->serial_, MOTOR_USB_ENDPOINT, ACTUATE, sizeof(ACTUATE), &transferred, 1000);
-
-            printf("transferred: [%i]; effort: [%f]; motor: %i, speed: %f",
-                    transferred, effort, this->id_, (double)speed);
         }
     }
 }
