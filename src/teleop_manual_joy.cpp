@@ -68,12 +68,12 @@ namespace teleop_manual_joy
         if (joy_msg->buttons[TeleopManualJoy::buttons::X])
         {
             // linear actuator forward
-            pos_msg->data[1] = joy_msg->buttons[TeleopManualJoy::buttons::X] * -30.0;
+            pos_msg->data[1] = joy_msg->buttons[TeleopManualJoy::buttons::X];
         }
         else if (joy_msg->buttons[TeleopManualJoy::buttons::Y])
         {
             // linear actuator backward
-            pos_msg->data[1] = joy_msg->buttons[TeleopManualJoy::buttons::Y] * 30.0;
+            pos_msg->data[1] = -joy_msg->buttons[TeleopManualJoy::buttons::Y];
         }
         else
         {
