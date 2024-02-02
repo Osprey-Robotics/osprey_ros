@@ -100,6 +100,7 @@ ament_target_dependencies(gpio_controller ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot_hardware_interface ${INCLUDE_DEPENDS})
 ament_target_dependencies(teleop_manual_joy ${INCLUDE_DEPENDS})
 
+target_link_libraries(robot gpio)
 target_link_libraries(robot_hardware_interface gpio robot usb-1.0)
 target_link_libraries(teleop_manual_joy_node teleop_manual_joy)
 target_link_libraries(test-gpio-limit-switches gpio robot)
@@ -123,6 +124,7 @@ install(
 )
 
 set(INSTALL_TARGETS
+  gpio
   gpio_controller
   robot
   robot_hardware_interface
