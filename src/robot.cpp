@@ -16,6 +16,13 @@ namespace osprey_robotics
         static USB usb = USB();
         usb.loadDevices(MOTOR_USB_VID, MOTOR_USB_PID);
 
+        static std::vector<GPIO *> gpios;
+        static GPIO relay1 = GPIO(RELAY_1, GPIO::OUT);
+        gpios.resize(2);
+        gpios[0] = &relay1;
+        static GPIO relay2 = GPIO(RELAY_2, GPIO::OUT);
+        gpios[1] = &relay2;
+
         // robot base
         base.joints[0] = Joint(1, SERIAL_FRONT_LEFT_1, ACTUATOR_TYPE_MOTOR);
         base.joints[0].name = "front_left_wheel_joint";
@@ -40,6 +47,7 @@ namespace osprey_robotics
         base.joints[6].usb = &usb;
         base.joints[7] = Joint(8, "", ACTUATOR_TYPE_LINEAR);
         base.joints[7].name = "bucket_ladder_frame_joint";
+        base.joints[7].gpios = gpios;
         base.joints[7].usb = NULL;
     }
 
