@@ -41,6 +41,7 @@ namespace osprey_robotics
         public:
             std::string name;
             USB *usb;
+            std::vector<GPIO *> gpios;
 
             /**
              * @brief Construct a new Joint object, empty/unused
