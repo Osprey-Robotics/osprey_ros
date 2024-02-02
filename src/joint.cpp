@@ -4,12 +4,15 @@
 *  you may not use this file except in compliance with the License.
 */
 
+#include <cstring>
 #include <iomanip>
 #include <iostream>
 #include <math.h>
 #include <stdexcept>
 #include <stdlib.h>
+#include <unistd.h>
 
+#include "gpio.hpp"
 #include "joint.hpp"
 
 // Spark Max USB speed of motors command range -0.50 to 0.50 big endian
@@ -79,6 +82,30 @@ namespace osprey_robotics
             usb->bulkWrite(this->serial_, MOTOR_USB_ENDPOINT, SPEED, sizeof(SPEED), &transferred, 1000);
             // activate motor
             usb->bulkWrite(this->serial_, MOTOR_USB_ENDPOINT, ACTUATE, sizeof(ACTUATE), &transferred, 1000);
+        }
+        else if (actuatorType_ == ACTUATOR_TYPE_LINEAR)
+        {
+            GPIO *relay = NULL;
+
+            if (effort == 0.0)
+            {
+                 // stop
+                gpios[0]->output(GPIO::LOW);
+                gpios[1]->output(GPIO::LOW);
+                return;
+            }
+            //extend, forward
+            else if (effort == 1.0)
+            {
+                relay = gpios[0];
+            }
+            // retract, backward
+            else if (effort == -1.0)
+            {
+                relay = gpios[1];
+            }
+
+            relay->output(GPIO::HIGH);
         }
     }
 }
