@@ -59,10 +59,18 @@ ros2 launch osprey_ros osprey_ros.launch.py
 ## Robot Human Controllers
 There are presently two ways to control the robot using [teleop twist joy](https://github.com/ros2/teleop_twist_joy) and [keyboard](https://github.com/ros2/teleop_twist_keyboard)
 
-### Gamepad
-Run the following command to invoke the controller for the gamepad. Presently using a Logitech F310, which works with the `xbox` configuration. 
+### Remote operation
+For remote operation over IP run the following commands on both systems prior
+to running ros launch files.
 ```bash
-ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'
+export ROS_MASTER_URI=<robot_ip>:12345
+export ROS_IP=<robot_ip>10.1.2.7
+```
+
+### Gamepad
+Run the following command to invoke the teleop manual joy controller for the gamepad. 
+```bash
+ros2 launch osprey_ros gamepad.launch.py
 ```
 
 #### Button Layout
