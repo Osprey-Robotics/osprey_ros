@@ -56,7 +56,7 @@ namespace teleop_manual_joy
         else if (joy_msg->buttons[TeleopManualJoy::buttons::B])
         {
             // dump bucket backward
-            pos_msg->data[0] = joy_msg->buttons[TeleopManualJoy::buttons::B] * -30.0;
+            pos_msg->data[0] = joy_msg->buttons[TeleopManualJoy::buttons::B] * 30.0;
         }
         else
         {
