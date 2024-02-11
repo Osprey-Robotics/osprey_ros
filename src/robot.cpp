@@ -16,12 +16,28 @@ namespace osprey_robotics
         static USB usb = USB();
         usb.loadDevices(MOTOR_USB_VID, MOTOR_USB_PID);
 
-        static std::vector<GPIO *> gpios;
+        static std::vector<GPIO *> gpios_lift;
+        gpios_lift.resize(2);
+        static GPIO limit_top = GPIO(LIMIT_BUCKET_LADDER_TOP, GPIO::IN);
+        gpios_lift[0] = &limit_top;
+        static GPIO limit_bottom = GPIO(LIMIT_BUCKET_LADDER_BOTTOM, GPIO::IN);
+        gpios_lift[1] = &limit_bottom;
+
+        static std::vector<GPIO *> gpios_dump;
+        gpios_dump.resize(2);
+        static GPIO limit_forward = GPIO(LIMIT_DEPOSITION_FORWARD, GPIO::IN);
+        gpios_dump[0] = &limit_forward;
+        static GPIO limit_back = GPIO(LIMIT_DEPOSITION_BACK, GPIO::IN);
+        gpios_dump[1] = &limit_back;
+
+        static std::vector<GPIO *> gpios_actuators;
+        gpios_actuators.resize(3);
         static GPIO relay1 = GPIO(RELAY_1, GPIO::OUT);
-        gpios.resize(2);
-        gpios[0] = &relay1;
+        gpios_actuators[0] = &relay1;
         static GPIO relay2 = GPIO(RELAY_2, GPIO::OUT);
-        gpios[1] = &relay2;
+        gpios_actuators[1] = &relay2;
+        static GPIO limit_extended = GPIO(LIMIT_ACTUATOR_EXTENDED, GPIO::IN);
+        gpios_actuators[2] = &limit_extended;
 
         // robot base
         base.joints[0] = Joint(1, SERIAL_FRONT_LEFT_1, ACTUATOR_TYPE_MOTOR);
@@ -38,16 +54,18 @@ namespace osprey_robotics
         base.joints[3].usb = &usb;
         base.joints[4] = Joint(5, SERIAL_LADDER_LIFT, ACTUATOR_TYPE_MOTOR);
         base.joints[4].name = "bucket_ladder_lift_joint";
+        base.joints[4].gpios = gpios_lift;
         base.joints[4].usb = &usb;
         base.joints[5] = Joint(6, SERIAL_LADDER_DIG, ACTUATOR_TYPE_MOTOR);
         base.joints[5].name = "bucket_ladder_buckets_joint";
         base.joints[5].usb = &usb;
         base.joints[6] = Joint(7, SERIAL_DEPOSITION, ACTUATOR_TYPE_MOTOR);
         base.joints[6].name = "bucket_dump_joint";
+        base.joints[6].gpios = gpios_dump;
         base.joints[6].usb = &usb;
         base.joints[7] = Joint(8, "", ACTUATOR_TYPE_LINEAR);
         base.joints[7].name = "bucket_ladder_frame_joint";
-        base.joints[7].gpios = gpios;
+        base.joints[7].gpios = gpios_actuators;
         base.joints[7].usb = NULL;
     }
 
