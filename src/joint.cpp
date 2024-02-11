@@ -63,11 +63,42 @@ namespace osprey_robotics
 
         if (actuatorType_ == ACTUATOR_TYPE_MOTOR)
         {
+            if(effort == 0)
+            {
+                goto set_speed;
+            }
+
+            if(name == "bucket_ladder_lift_joint")
+            {
+                // check limit switches, limit fd I/O with extended conditional
+                if(effort > 0 && gpios[0]->input() == GPIO::HIGH)
+                {
+                    return;
+                }
+                else if(effort < 0 && gpios[1]->input() == GPIO::HIGH)
+                {
+                    return;
+                }
+            }
+            else if(name == "bucket_dump_joint")
+            {
+                // check limit switches, limit fd I/O with extended conditional
+                if(effort < 0 && gpios[0]->input() == GPIO::HIGH)
+                {
+                    return;
+                }
+                else if(effort > 0 && gpios[1]->input() == GPIO::HIGH)
+                {
+                    return;
+                }
+            }
+
             if (effort > 50.0)
                 effort = 50.0;
             if (effort < -50.0)
                 effort = -50.0;
 
+            set_speed:
             // reduce range to -0.50 to 0.50
             _Float32 speed = (_Float32)effort / 100.0f;
             unsigned char const *cFloat = reinterpret_cast<unsigned char const *>(&speed);
@@ -97,6 +128,10 @@ namespace osprey_robotics
             //extend, forward
             else if (effort == 1.0)
             {
+                if(gpios[2]->input() == GPIO::HIGH)
+                {
+                    return;
+                }
                 relay = gpios[0];
             }
             // retract, backward
