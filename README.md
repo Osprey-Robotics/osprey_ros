@@ -51,9 +51,39 @@ This is the primary image most will want to use for simulation testing of the
 robot and/or sensors.
 
 ## Run
-To run on the actual hardware run the following command in your ros2 workspace; ex `~/ros2_ws/`.
+There are two ways to run osprey_ros, either on the actual robot hardware or
+using simulated robot hardware. Either will work in simulation, but one
+will only run on the robot itself, the simulation can be run in the docker
+images or any ROS 2 Iron environment.
+
+### Running on the Physical Robot
+To run on the actual hardware run the following command in your ros2 workspace;
+ex `~/ros2_ws/`.
 ```bash
 ros2 launch osprey_ros osprey_ros.launch.py
+```
+
+### Running a Simulated Robot
+To run on simulated hardware run the following command in your ros2 workspace;
+ex `~/ros2_ws/`.
+```bash
+ros2 launch osprey_ros osprey_ros.launch.py sim:=true
+```
+
+### Running Rviz2
+Rviz2 is used to see what the robot sees, sensors, etc. To run the robot either
+physical or simulated, start either, and then run the following command. The
+robot will not appear if you do not start osprey_ros first!
+```bash
+rviz2 -d src/osprey_ros/sim/robot.rviz
+```
+
+### Running Gazebo
+Gazebo is used to see what we see, how the robot operates in a simulated world,
+physical or simulated, start either, and then run the following command. The
+robot will not appear if you do not start osprey_ros first!
+```bash
+ros2 launch osprey_ros gazebo.launch.py
 ```
 
 ## Robot Human Controllers
