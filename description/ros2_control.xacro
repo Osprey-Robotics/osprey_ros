@@ -136,9 +136,7 @@
     </xacro:if>
     <xacro:if value="${use_hardware == 'gazebo'}">
         <gazebo>
-            <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control::GazeboSystemInterface">
-                <robot_param>robot_description</robot_param>
-                <robot_param_node>robot_state_publisher</robot_param_node>
+            <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
                 <parameters>$(find osprey_ros)/config/robot_controllers.yaml</parameters>
             </plugin>
         </gazebo>
