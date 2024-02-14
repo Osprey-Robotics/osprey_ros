@@ -1,19 +1,28 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="ros2_control" params="use_mock_hardware">
+  <xacro:macro name="ros2_control" params="use_hardware">
     <ros2_control name="ros2_control" type="system">
-       <xacro:unless value="${use_mock_hardware}">
+       <xacro:if value="${use_hardware == 'robot'}">
             <hardware>
                 <plugin>robot_hardware_interface/RobotSystemHardware</plugin>
                 <param name="hw_start_duration_sec">1.0</param>
                 <param name="hw_stop_duration_sec">3.0</param>
             </hardware>
-        </xacro:unless>
-        <xacro:if value="${use_mock_hardware}">
+        </xacro:if>
+        <xacro:if value="${use_hardware == 'mock'}">
             <hardware>
-                <!-- <plugin>gazebo_ros2_control/GazeboSystem</plugin> -->
                 <plugin>mock_components/GenericSystem</plugin>
                 <param name="calculate_dynamics">true</param>
+            </hardware>
+        </xacro:if>
+        <xacro:if value="${use_hardware == 'ign_gazebo'}">
+            <hardware>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            </hardware>
+        </xacro:if>
+        <xacro:if value="${use_hardware == 'gazebo'}">
+            <hardware>
+                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
             </hardware>
         </xacro:if>
         <joint name="front_left_wheel_joint">
@@ -116,12 +125,23 @@
             </state_interface>
         </gpio>
     </ros2_control>
+    <xacro:if value="${use_hardware == 'ign_gazebo'}">
+        <gazebo>
+            <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                <robot_param>robot_description</robot_param>
+                <robot_param_node>robot_state_publisher</robot_param_node>
+                <parameters>$(find osprey_ros)/config/robot_controllers.yaml</parameters>
+            </plugin>
+        </gazebo>
+    </xacro:if>
+    <xacro:if value="${use_hardware == 'gazebo'}">
+        <gazebo>
+            <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control::GazeboSystemInterface">
+                <robot_param>robot_description</robot_param>
+                <robot_param_node>robot_state_publisher</robot_param_node>
+                <parameters>$(find osprey_ros)/config/robot_controllers.yaml</parameters>
+            </plugin>
+        </gazebo>
+    </xacro:if>
   </xacro:macro>
-    <gazebo>
-        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-            <robot_param>robot_description</robot_param>
-            <robot_param_node>robot_state_publisher</robot_param_node>
-            <parameters>$(find osprey_ros)/config/robot_controllers.yaml</parameters>
-        </plugin>
-    </gazebo>
 </robot>
