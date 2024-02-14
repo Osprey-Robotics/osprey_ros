@@ -35,8 +35,8 @@ def generate_launch_description():
             " ",
             xacro_file,
             " ",
-            "use_mock_hardware:=",
-            LaunchConfiguration("sim"),
+            "use_hardware:=",
+            "robot" if LaunchConfiguration("sim") else "mock",
         ]
     )
     robot_description = {'robot_description': robot_description_content}
