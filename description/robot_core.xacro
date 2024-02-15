@@ -166,11 +166,11 @@
     </link>
 
     <!-- Bucket Ladder Guide Frame -->
-    <joint name="bucket_ladder_frame_joint" type="prismatic">
+    <joint name="bucket_ladder_frame_joint" type="revolute">
         <parent link="chassis"/>
         <child link="guide_frame"/>
-        <limit lower="0"  upper="1"  velocity="0.1"  effort="${limit_effort}"  />
-        <axis xyz="0 0 1"/>
+        <limit lower="0"  upper="0.523598775598"  velocity="0.1"  effort="${limit_effort}"  />
+        <axis xyz="0 1 0"/>
         <origin xyz="${ladder_offset} 0 0" rpy="0 0 0"/>
     </joint>
     <link name="guide_frame">
@@ -197,7 +197,7 @@
     <joint name="bucket_ladder_lift_joint" type="prismatic">
         <parent link="guide_frame"/>
         <child link="lift"/>
-        <limit lower="0"  upper="2"  velocity="0.1"  effort="${limit_effort}"  />
+        <limit lower="-0.5"  upper="0"  velocity="0.1"  effort="${limit_effort}"  />
         <axis xyz="0 0 1"/>
     </joint>
     <link name="lift">
