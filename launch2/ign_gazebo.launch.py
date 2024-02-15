@@ -17,7 +17,8 @@ def launch_setup(context: LaunchContext):
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
     classic = eval(context.perform_substitution(LaunchConfiguration('classic')).title())
     which_gazebo = 'gazebo' if classic else 'ign_gazebo'
-    world = os.path.join(pkg_path,'worlds','empty.world')
+    world_file = context.perform_substitution(LaunchConfiguration('world')) + '.world'
+    world = os.path.join(pkg_path,'worlds', world_file)
     xacro_file = os.path.join(pkg_path,'description',filename)
 
     robot_description_content = Command(
@@ -148,6 +149,14 @@ def generate_launch_description():
             "classic",
             default_value="False",
             description="Start classic Gazebo instead of IGN Gazebo.",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "world",
+            default_value="empty",
+            description="The world the robot will be spawned within.",
         )
     )
 
