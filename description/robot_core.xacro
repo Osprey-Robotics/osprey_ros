@@ -56,7 +56,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
+        <xacro:inertial_box mass="2" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
             <origin xyz="${chassis_length/2} 0 0" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
@@ -82,7 +82,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_cylinder mass="0.1" length="${wheel_length}" radius="${wheel_radius}">
+        <xacro:inertial_cylinder mass="0.5" length="${wheel_length}" radius="${wheel_radius}">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
@@ -108,7 +108,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_cylinder mass="0.1" length="${wheel_length}" radius="${wheel_radius}">
+        <xacro:inertial_cylinder mass="0.5" length="${wheel_length}" radius="${wheel_radius}">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
@@ -134,7 +134,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_cylinder mass="0.1" length="${wheel_length}" radius="${wheel_radius}">
+        <xacro:inertial_cylinder mass="0.5" length="${wheel_length}" radius="${wheel_radius}">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
@@ -160,7 +160,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_cylinder mass="0.1" length="${wheel_length}" radius="${wheel_radius}">
+        <xacro:inertial_cylinder mass="0.5" length="${wheel_length}" radius="${wheel_radius}">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
@@ -188,7 +188,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="0.5" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
+        <xacro:inertial_box mass="0.25" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
@@ -214,7 +214,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="0.5" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
+        <xacro:inertial_box mass="0.1" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
@@ -239,7 +239,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="0.5" x="${buckets_length}" y="${buckets_width}" z="${buckets_height}">
+        <xacro:inertial_box mass="0.1" x="${buckets_length}" y="${buckets_width}" z="${buckets_height}">
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
