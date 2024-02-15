@@ -188,7 +188,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="0.25" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
+        <xacro:inertial_box mass="0.75" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
@@ -197,7 +197,7 @@
     <joint name="bucket_ladder_lift_joint" type="prismatic">
         <parent link="guide_frame"/>
         <child link="lift"/>
-        <limit lower="-0.5"  upper="0"  velocity="0.1"  effort="${limit_effort}"  />
+        <limit lower="-0.35"  upper="0"  velocity="0.1"  effort="${limit_effort}"  />
         <axis xyz="0 0 1"/>
     </joint>
     <link name="lift">
@@ -214,7 +214,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="0.1" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
+        <xacro:inertial_box mass="0.01" x="${ladder_length}" y="${ladder_width}" z="${ladder_height}">
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
