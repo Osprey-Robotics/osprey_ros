@@ -9,9 +9,9 @@
     <xacro:property name="bucket_height" value="0.254" />
     <xacro:property name="bucket_width" value="0.254" />
 
-    <xacro:property name="bucket_ladder_scale" value="0.9 0.9 0.9" />
-    <xacro:property name="bucket_ladder_rpy" value="${pi/2} ${pi/2} 0" />
-    <xacro:property name="bucket_ladder_xyz" value="-${buckets_length/2 + ladder_length} ${ladder_width - wheel_gap*2.5} ${buckets_height - wheel_radius}" />
+    <xacro:property name="bucket_ladder_scale" value="1 1 1" />
+    <xacro:property name="bucket_ladder_rpy" value="-${pi/2} ${pi/2} 0" />
+    <xacro:property name="bucket_ladder_xyz" value="${buckets_length} -${ladder_width + wheel_gap/4} ${buckets_height - chassis_height/1.25}" />
 
     <xacro:property name="buckets_length" value="0.254" /> <!-- depth -->
     <xacro:property name="buckets_height" value="0.9144" />
@@ -24,7 +24,8 @@
     <xacro:property name="ladder_length" value="0.0508" /> <!-- depth -->
     <xacro:property name="ladder_height" value="0.7874" />
     <xacro:property name="ladder_width" value="${chassis_width}" />
-    <xacro:property name="ladder_offset" value="${-chassis_length/2 - buckets_length/2 - 0.0127}" />
+    <xacro:property name="ladder_offset" value="${chassis_length/2 + buckets_width/10}" />
+    <xacro:property name="ladder_xyz" value="${buckets_length} -${ladder_width + wheel_gap/4} ${buckets_height - chassis_height/2}" />
 
     <xacro:property name="wheel_gap" value="0.0127" />
     <xacro:property name="wheel_length" value="0.1016" />
@@ -50,14 +51,14 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="-${chassis_length/2 + chassis_height/2} ${chassis_length/2 - chassis_height - wheel_gap/2} -${chassis_width/2}" rpy="${pi/2} 0 0"/>
+            <origin xyz="-${chassis_length/2} ${chassis_length/2 - chassis_height - wheel_gap/2} -${chassis_width/2}" rpy="${pi/2} 0 0"/>
             <geometry>
                 <mesh filename="file://$(find osprey_ros)/meshes/chassis.dae" scale="0.8 0.8 0.8" />
             </geometry>
             <material name="gray"/>
         </visual>
         <xacro:inertial_box mass="2" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
-            <origin xyz="${chassis_length/2} 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
 
@@ -65,7 +66,7 @@
     <joint name="front_left_wheel_joint" type="continuous">
         <parent link="chassis"/>
         <child link="front_left_wheel"/>
-        <origin xyz="${wheel_offset_front} -${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_front} ${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
         <axis xyz="0 0 1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
@@ -76,7 +77,7 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="-${wheel_radius} ${wheel_radius} -${wheel_length/2}" rpy="${pi/2} 0 0"/>
+            <origin xyz="-${wheel_radius} -${wheel_radius} ${wheel_length/2}" rpy="-${pi/2} 0 0"/>
             <geometry>
                 <mesh filename="${wheel_mesh_file}" scale="${wheel_mesh_scale}" />
             </geometry>
@@ -91,37 +92,11 @@
     <joint name="front_right_wheel_joint" type="continuous">
         <parent link="chassis"/>
         <child link="front_right_wheel"/>
-        <origin xyz="${wheel_offset_front} ${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_front} -${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
         <axis xyz="0 0 -1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
     <link name="front_right_wheel">
-        <collision>
-            <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
-            </geometry>
-        </collision>
-        <visual>
-            <origin xyz="-${wheel_radius} -${wheel_radius} ${wheel_length/2}" rpy="-${pi/2} 0 0"/>
-            <geometry>
-                <mesh filename="${wheel_mesh_file}" scale="${wheel_mesh_scale}" />
-            </geometry>
-            <material name="gray"/>
-        </visual>
-        <xacro:inertial_cylinder mass="0.5" length="${wheel_length}" radius="${wheel_radius}">
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </xacro:inertial_cylinder>
-    </link>
-
-    <!-- Rear Left Wheel -->
-    <joint name="rear_left_wheel_joint" type="continuous">
-        <parent link="chassis"/>
-        <child link="rear_left_wheel"/>
-        <origin xyz="${wheel_offset_rear} -${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
-    </joint>
-    <link name="rear_left_wheel">
         <collision>
             <geometry>
                 <cylinder length="${wheel_length}" radius="${wheel_radius}" />
@@ -139,15 +114,15 @@
         </xacro:inertial_cylinder>
     </link>
 
-    <!-- Rear Right Wheel -->
-    <joint name="rear_right_wheel_joint" type="continuous">
+    <!-- Rear Left Wheel -->
+    <joint name="rear_left_wheel_joint" type="continuous">
         <parent link="chassis"/>
-        <child link="rear_right_wheel"/>
-        <origin xyz="${wheel_offset_rear} ${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
-        <axis xyz="0 0 -1"/>
+        <child link="rear_left_wheel"/>
+        <origin xyz="${wheel_offset_rear} ${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
+        <axis xyz="0 0 1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
-    <link name="rear_right_wheel">
+    <link name="rear_left_wheel">
         <collision>
             <geometry>
                 <cylinder length="${wheel_length}" radius="${wheel_radius}" />
@@ -165,11 +140,37 @@
         </xacro:inertial_cylinder>
     </link>
 
+    <!-- Rear Right Wheel -->
+    <joint name="rear_right_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="rear_right_wheel"/>
+        <origin xyz="${wheel_offset_rear} -${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
+        <axis xyz="0 0 -1"/>
+        <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
+    </joint>
+    <link name="rear_right_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-${wheel_radius} ${wheel_radius} -${wheel_length/2}" rpy="${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="${wheel_mesh_file}" scale="${wheel_mesh_scale}" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_cylinder mass="0.5" length="${wheel_length}" radius="${wheel_radius}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
     <!-- Bucket Ladder Guide Frame -->
     <joint name="bucket_ladder_frame_joint" type="revolute">
         <parent link="chassis"/>
         <child link="guide_frame"/>
-        <limit lower="0"  upper="0.523598775598"  velocity="0.1"  effort="${limit_effort}"  />
+        <limit lower="0"  upper="-0.523598775598"  velocity="0.1"  effort="${limit_effort}"  />
         <axis xyz="0 1 0"/>
         <origin xyz="${ladder_offset} 0 0" rpy="0 0 0"/>
     </joint>
@@ -208,7 +209,7 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="${bucket_ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
+            <origin xyz="${ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
             <geometry>
                 <mesh filename="file://$(find osprey_ros)/meshes/bucket_ladder_lift_frame.dae" scale="${bucket_ladder_scale}" />
             </geometry>
@@ -233,7 +234,7 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="${bucket_ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
+            <origin xyz="${ladder_xyz}" rpy="${bucket_ladder_rpy}"/>
             <geometry>
                 <mesh filename="file://$(find osprey_ros)/meshes/bucket_ladder_gears.dae" scale="${bucket_ladder_scale}" />
             </geometry>
@@ -249,7 +250,7 @@
         <child link="bucket"/>
         <limit lower="0"  upper="2"  velocity="0.1"  effort="${limit_effort}"  />
         <axis xyz="0 0 1"/>
-        <origin xyz="-${bucket_length/2} 0 ${bucket_height/2 + chassis_height}" rpy="0 0 0"/>
+        <origin xyz="${bucket_length/2} 0 ${bucket_height/2 + chassis_height}" rpy="0 0 0"/>
     </joint>
     <link name="bucket">
         <collision>
@@ -258,7 +259,7 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="-${bucket_length/2} ${bucket_length/2} -${chassis_height}" rpy="${pi/2} 0 0"/>
+            <origin xyz="${bucket_length/2} -${bucket_width/1.6} -${chassis_height}" rpy="${pi/2} 0 ${pi}"/>
             <geometry>
                 <mesh filename="file://$(find osprey_ros)/meshes/dump_bucket_body.dae" scale="0.065 0.065 0.065" />
             </geometry>
