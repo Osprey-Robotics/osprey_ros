@@ -129,7 +129,7 @@ Credits and thanks for resources used in this repository, some code and/or proje
 - Articulated Robotics - 
   [Making a Mobile Robot with ROS](https://articulatedrobotics.xyz/mobile-robot-full-list/)
 - ROS 2 Control Demos -
-  [example 2](https://github.com/ros-controls/ros2_control_demos)
+  [example 2](https://control.ros.org/iron/doc/ros2_control_demos/example_2/doc/userdoc.html), [example 10](https://control.ros.org/iron/doc/ros2_control_demos/example_10/doc/userdoc.html)
 - Slate Robotics - 
   [How to implement ros_control on a custom robot](https://slaterobotics.medium.com/how-to-implement-ros-control-on-a-custom-robot-748b52751f2e)
 - ICS -
