@@ -241,7 +241,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="0.1" x="${buckets_length}" y="${buckets_width}" z="${buckets_height}">
+        <xacro:inertial_box mass="0.01" x="${buckets_length}" y="${buckets_width}" z="${buckets_height}">
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
