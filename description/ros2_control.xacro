@@ -140,12 +140,14 @@
                 <wheel_separation>1</wheel_separation>
                 <wheel_radius>0.1524</wheel_radius>
                 <wheels_per_side>2</wheels_per_side>
-                <odom_publish_frequency>1</odom_publish_frequency>
+                <odom_publish_frequency>10</odom_publish_frequency>
                 <odom_frame_id>odom</odom_frame_id>
                 <base_frame_id> base_link</base_frame_id>
                 <enable_odom_tf>true</enable_odom_tf>
                 <use_stamped_vel>false</use_stamped_vel>
                 <topic>cmd_vel</topic>
+                <odom_topic>odom</odom_topic>
+                <tf_topic>tf</tf_topic>
             </plugin>
         </gazebo>
     </xacro:if>
