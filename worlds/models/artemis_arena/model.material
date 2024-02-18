@@ -1,0 +1,14 @@
+    material artemis_arena/Image
+    {
+      technique
+      {
+        pass
+        {
+          texture_unit
+          {
+            texture materials/textures/apollo15_moon.jpg
+            scale 0.5 0.5
+          }
+        }
+      }
+    }
