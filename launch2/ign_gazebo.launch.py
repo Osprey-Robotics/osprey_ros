@@ -11,7 +11,7 @@ from launch.substitutions import Command, FindExecutable, LaunchConfiguration, P
 from launch_ros.actions import Node
 
 def launch_setup(context: LaunchContext):
-    print()
+
     filename = 'robot.urdf.xacro'
     pkg_name = 'osprey_ros'
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
@@ -52,10 +52,10 @@ def launch_setup(context: LaunchContext):
     else :
         gazebo = IncludeLaunchDescription(
                     PythonLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('ros_ign_gazebo'), 'launch'), '/ign_gazebo.launch.py']),
+                        get_package_share_directory('ros_gz_sim'), 'launch'), '/gz_sim.launch.py']),
                         launch_arguments={
                             'pause' : 'true',
-                            'ign_args' : world,
+                            'gz_args' : world,
                         }.items(),
                     )
 
@@ -72,34 +72,28 @@ def launch_setup(context: LaunchContext):
         parameters=[robot_description],
     )
 
-    diff_drive_spawner = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller','--set-state', 'active',
-             'diff_drive_controller'],
-        output='screen'
+    diff_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["diff_drive_controller", "-c", "/controller_manager"],
     )
 
-    node_joint_state_publisher = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        output='both',
+    joint_state_broadcaster = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "-c", "/controller_manager"],
     )
 
-    joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller','--set-state', 'active',
-             'joint_state_broadcaster'],
-        output='screen'
+    position_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["position_controllers", "-c", "/controller_manager"],
     )
 
-    position_spawner = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller','--set-state', 'active',
-             'position_controllers'],
-        output='screen'
-    )
-
-    velocity_spawner = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller','--set-state', 'active',
-             'velocity_controllers'],
-        output='screen'
+    velocity_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["velocity_controllers", "-c", "/controller_manager"],
     )
 
     delayed_joint_broad_spawner = RegisterEventHandler(
@@ -132,7 +126,6 @@ def launch_setup(context: LaunchContext):
 
     return [
         node_robot_state_publisher,
-        node_joint_state_publisher,
         delayed_joint_broad_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
