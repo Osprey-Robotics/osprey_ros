@@ -149,6 +149,9 @@
                 <odom_topic>odom</odom_topic>
                 <tf_topic>tf</tf_topic>
             </plugin>
+            <plugin filename="libignition-gazebo6-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+                <render_engine>ogre2</render_engine>
+            </plugin>
         </gazebo>
     </xacro:if>
     <xacro:if value="${use_hardware == 'gazebo'}">
