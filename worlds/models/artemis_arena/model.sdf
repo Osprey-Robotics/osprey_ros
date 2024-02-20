@@ -212,6 +212,26 @@
       <pose>-1.9 -2.1 0.0001 0 -0 1.5708</pose>
       <enable_wind>false</enable_wind>
     </link>
+    <include>
+      <name>fiduciary_1</name>
+      <pose>-2.2 3.14 0.0001 0 0 0</pose>
+      <uri>model://fiduciary</uri>
+    </include>
+    <include>
+      <name>fiduciary_2</name>
+      <pose>2.2 3.14 0.0001 0 0 0</pose>
+      <uri>model://fiduciary</uri>
+    </include>
+    <include>
+      <name>fiduciary_3</name>
+      <pose>2.2 -3.14 0.0001 0 0 0</pose>
+      <uri>model://fiduciary</uri>
+    </include>
+    <include>
+      <name>fiduciary_4</name>
+      <pose>-2.2 -3.14 0.0001 0 0 0</pose>
+      <uri>model://fiduciary</uri>
+    </include>
     <static>1</static>
   </model>
 </sdf>
