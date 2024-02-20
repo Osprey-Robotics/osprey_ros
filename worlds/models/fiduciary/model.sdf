@@ -1,0 +1,61 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='fiduciary'>
+    <pose>0 0 0 0 0 0</pose>
+    <link name='fiduciary'>
+      <collision name='fiduciary_collision'>
+        <geometry>
+          <cylinder>
+            <length>0.3</length>
+            <radius>0.1524</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='fiduciary_visual'>
+        <pose>0 0 1 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.3</length>
+            <radius>0.1524</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.6 0.6 0.6 1</ambient>
+          <diffuse>0.9 0.9 0.9 1</diffuse>
+          <specular>1 1 1 1</specular>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+    </link>
+    <link name='fiduciary_stand'>
+      <collision name='fiduciary_stand_collision'>
+        <geometry>
+          <cylinder>
+            <length>1</length>
+            <radius>0.0254</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='fiduciary_stand_visual'>
+        <pose>0 0 0.5 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>1</length>
+            <radius>0.0508</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.2 0.2 0.2 1</ambient>
+          <diffuse>0.1 0.1 0.1 1</diffuse>
+          <specular>1 1 1 1</specular>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+    </link>
+    <static>1</static>
+  </model>
+</sdf>
