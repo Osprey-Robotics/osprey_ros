@@ -303,12 +303,12 @@ namespace robot_hardware_interface
             hw_velocities_[i] = hw_commands_[i];
 
             // Commands sent to hardware
-            RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
+            RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
                          "Joint: %s, command %.5f, position state: %.5f, velocity state: %.5f",
-                        info_.joints[i].name.c_str(),
-                        hw_commands_[i],
-                        hw_positions_[i],
-                        hw_velocities_[i]);
+                         info_.joints[i].name.c_str(),
+                         hw_commands_[i],
+                         hw_positions_[i],
+                         hw_velocities_[i]);
 
             joint.actuate(hw_commands_[i], duration);
         }
