@@ -1,0 +1,9 @@
+[Unit]
+Description="ROS 2 Opsrey Gamepad Service Path"
+
+[Path]
+PathExists=/dev/input/js0
+Unit=ros2_osprey_gamepad.service
+
+[Install]
+WantedBy=multi-user.target
