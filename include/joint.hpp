@@ -39,6 +39,7 @@ namespace osprey_robotics
     class Joint
     {
         public:
+            int multiplier = 1;
             std::string name;
             USB *usb;
             std::vector<GPIO *> gpios;
