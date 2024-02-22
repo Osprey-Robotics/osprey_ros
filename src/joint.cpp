@@ -93,13 +93,16 @@ namespace osprey_robotics
                 }
             }
 
+            // apply joint effort/speed multiplier
+            effort *= multiplier;
+
+            // reduce range to -0.50 to 0.50
             if (effort > 50.0)
                 effort = 50.0;
             if (effort < -50.0)
                 effort = -50.0;
 
             set_speed:
-            // reduce range to -0.50 to 0.50
             _Float32 speed = (_Float32)effort / 100.0f;
             unsigned char const *cFloat = reinterpret_cast<unsigned char const *>(&speed);
 
