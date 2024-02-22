@@ -34,6 +34,12 @@ namespace teleop_manual_joy
 
     void TeleopManualJoy::joyCallback(const sensor_msgs::msg::Joy::SharedPtr joy_msg)
     {
+        // system shutdown
+        if (joy_msg->buttons[TeleopManualJoy::buttons::CENTER])
+        {
+            std::system("sudo init 0");
+        }
+
         // Initializes with zeros by default.
         auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
 
