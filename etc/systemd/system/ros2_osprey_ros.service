@@ -1,0 +1,19 @@
+[Unit]
+Description="ROS 2 Opsrey ROS Service"
+
+[Service]
+Environment="HOME=/home/ubuntu/"
+Environment="ROS_DOMAIN_ID=114"
+Environment="LD_LIBRARY_PATH=/home/ubuntu/ros2_ws/install/osprey_ros/lib:/opt/ros/iron/lib"
+Environment="PATH=/opt/ros/iron/bin:${PATH}"
+Environment="PYTHONPATH=/opt/ros/iron/lib/python3.10/site-packages"
+Environment="AMENT_PREFIX_PATH=/home/ubuntu/ros2_ws/install/osprey_ros:/opt/ros/iron"
+# no go till fixing gpio
+#User=ubuntu
+
+ExecStart=/opt/ros/iron/bin/ros2 launch osprey_ros osprey_ros.launch.py
+ExecStartPost=/bin/sleep 10
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
