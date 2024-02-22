@@ -1,0 +1,18 @@
+[Unit]
+Description="ROS 2 Opsrey Gamepad Service"
+
+[Service]
+Environment="HOME=/home/ubuntu/ros2_ws"
+Environment="ROS_DOMAIN_ID=114"
+Environment="LD_LIBRARY_PATH=/home/ubuntu/ros2_ws/install/osprey_ros/lib:/opt/ros/iron/lib"
+Environment="PYTHONPATH=/opt/ros/iron/lib/python3.10/site-packages/"
+Environment="AMENT_PREFIX_PATH=/home/ubuntu/ros2_ws/install/osprey_ros:/opt/ros/iron"
+# run as same user as osprey_ros
+#User=ubuntu
+
+ExecStart=/opt/ros/iron/bin/ros2 launch osprey_ros gamepad.launch.py
+ExecStartPost=/bin/sleep 10
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
