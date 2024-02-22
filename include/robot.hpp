@@ -39,6 +39,12 @@ const std::string SERIAL_LADDER_DIG = "206A33544D43";
 const std::string SERIAL_LADDER_LIFT = "206C395A5543";
 const std::string SERIAL_DEPOSITION = "205D39515543";
 
+// motor speed multipliers min/max -50.0/50.0
+const _Float32 SPEED_MULTIPLIER_DEPOSITION = 30.0;
+const _Float32 SPEED_MULTIPLIER_LADDER_BUCKETS = 45.0;
+const _Float32 SPEED_MULTIPLIER_LADDER_LIFT = 30.0;
+const _Float32 SPEED_MULTIPLIER_WHEELS = 7.162;
+
 namespace osprey_robotics
 {
     /**
