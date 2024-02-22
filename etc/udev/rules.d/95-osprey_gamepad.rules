@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="input", KERNEL=="js0", RUN+="/bin/systemctl start ros2_osprey_gamepad"
+ACTION=="remove", SUBSYSTEM=="input", KERNEL=="js0", RUN+="/bin/systemctl stop ros2_osprey_gamepad"
