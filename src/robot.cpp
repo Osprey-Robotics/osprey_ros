@@ -41,25 +41,32 @@ namespace osprey_robotics
 
         // robot base
         base.joints[0] = Joint(1, SERIAL_FRONT_LEFT_1, ACTUATOR_TYPE_MOTOR);
+        base.joints[0].multiplier = SPEED_MULTIPLIER_WHEELS;
         base.joints[0].name = "front_left_wheel_joint";
         base.joints[0].usb = &usb;
         base.joints[1] = Joint(2, SERIAL_FRONT_RIGHT_3, ACTUATOR_TYPE_MOTOR);
+        base.joints[1].multiplier = SPEED_MULTIPLIER_WHEELS;
         base.joints[1].name = "front_right_wheel_joint";
         base.joints[1].usb = &usb;
         base.joints[2] = Joint(3, SERIAL_BACK_LEFT_2, ACTUATOR_TYPE_MOTOR);
+        base.joints[2].multiplier = SPEED_MULTIPLIER_WHEELS;
         base.joints[2].name = "rear_left_wheel_joint";
         base.joints[2].usb = &usb;
         base.joints[3] = Joint(4, SERIAL_BACK_RIGHT_4, ACTUATOR_TYPE_MOTOR);
+        base.joints[3].multiplier = SPEED_MULTIPLIER_WHEELS;
         base.joints[3].name = "rear_right_wheel_joint";
         base.joints[3].usb = &usb;
         base.joints[4] = Joint(5, SERIAL_LADDER_LIFT, ACTUATOR_TYPE_MOTOR);
+        base.joints[4].multiplier = SPEED_MULTIPLIER_LADDER_LIFT;
         base.joints[4].name = "bucket_ladder_lift_joint";
         base.joints[4].gpios = gpios_lift;
         base.joints[4].usb = &usb;
         base.joints[5] = Joint(6, SERIAL_LADDER_DIG, ACTUATOR_TYPE_MOTOR);
+        base.joints[5].multiplier = SPEED_MULTIPLIER_LADDER_BUCKETS;
         base.joints[5].name = "bucket_ladder_buckets_joint";
         base.joints[5].usb = &usb;
         base.joints[6] = Joint(7, SERIAL_DEPOSITION, ACTUATOR_TYPE_MOTOR);
+        base.joints[6].multiplier = SPEED_MULTIPLIER_DEPOSITION;
         base.joints[6].name = "bucket_dump_joint";
         base.joints[6].gpios = gpios_dump;
         base.joints[6].usb = &usb;
