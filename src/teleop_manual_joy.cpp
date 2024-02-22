@@ -15,7 +15,7 @@ using std::placeholders::_1;
 namespace teleop_manual_joy
 {
     TeleopManualJoy::TeleopManualJoy(const rclcpp::NodeOptions &options)
-        : Node("teleop_manual_joy"), count_(0)
+        : Node("teleop_manual_joy", options)
     {
         // publish to controller specific topics, may combine into unified
         publisher_cmd_vel_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
@@ -37,26 +37,27 @@ namespace teleop_manual_joy
         // Initializes with zeros by default.
         auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
 
-        // should move hard coded value to configuration file
-        cmd_vel_msg->linear.x = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_Y] * 7.612;
-        cmd_vel_msg->angular.z = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_X] * 7.612;
+        // set wheel velocity
+        cmd_vel_msg->linear.x = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_Y];
+        cmd_vel_msg->angular.z = joy_msg->axes[TeleopManualJoy::axes::LEFT_JOY_X];
 
+        // publish velocities
         publisher_cmd_vel_->publish(std::move(cmd_vel_msg));
 
         // Initializes with zeros by default.
         auto pos_msg = std::make_unique<std_msgs::msg::Float64MultiArray>();
         pos_msg->data.resize(3);
 
-        // should move hard coded value to configuration file
+        // control dump bucket
         if (joy_msg->buttons[TeleopManualJoy::buttons::A])
         {
             // dump bucket forward
-            pos_msg->data[0] = joy_msg->buttons[TeleopManualJoy::buttons::A] * -30.0;
+            pos_msg->data[0] = -joy_msg->buttons[TeleopManualJoy::buttons::A];
         }
         else if (joy_msg->buttons[TeleopManualJoy::buttons::B])
         {
             // dump bucket backward
-            pos_msg->data[0] = joy_msg->buttons[TeleopManualJoy::buttons::B] * 30.0;
+            pos_msg->data[0] = joy_msg->buttons[TeleopManualJoy::buttons::B];
         }
         else
         {
@@ -64,7 +65,7 @@ namespace teleop_manual_joy
             pos_msg->data[0] = 0;
         }
 
-        // should move hard coded value to configuration file
+        // control linear actuators
         if (joy_msg->buttons[TeleopManualJoy::buttons::X])
         {
             // linear actuator forward
@@ -81,16 +82,16 @@ namespace teleop_manual_joy
             pos_msg->data[1] = 0;
         }
 
-        // should move hard coded value to configuration file
+        // control bucket ladder lift
         if (joy_msg->buttons[TeleopManualJoy::buttons::LEFT_BUMPER])
         {
             // bucket ladder up
-            pos_msg->data[2] = joy_msg->buttons[TeleopManualJoy::buttons::LEFT_BUMPER] * 30.0;
+            pos_msg->data[2] = joy_msg->buttons[TeleopManualJoy::buttons::LEFT_BUMPER];
         }
         else if (joy_msg->buttons[TeleopManualJoy::buttons::RIGHT_BUMPER])
         {
             // bucket ladder down
-            pos_msg->data[2] = joy_msg->buttons[TeleopManualJoy::buttons::RIGHT_BUMPER] * -30.0;
+            pos_msg->data[2] = -joy_msg->buttons[TeleopManualJoy::buttons::RIGHT_BUMPER];
         }
         else
         {
@@ -98,23 +99,24 @@ namespace teleop_manual_joy
             pos_msg->data[2] = 0;
         }
 
+        // publish positions
         publisher_pos_->publish(std::move(pos_msg));
 
         // Initializes with zeros by default.
         auto vel_msg = std::make_unique<std_msgs::msg::Float64MultiArray>();
         vel_msg->data.resize(1);
 
-        // should move hard coded value to configuration file
+        // control bucket ladder buckets
         if (joy_msg->axes[TeleopManualJoy::axes::LEFT_TRIGGER] < 0)
         {
             // bucket ladder buckets forward
-            vel_msg->data[0] = joy_msg->axes[TeleopManualJoy::axes::LEFT_TRIGGER] * -45.0;
+            vel_msg->data[0] = -joy_msg->axes[TeleopManualJoy::axes::LEFT_TRIGGER];
         }
         else 
         if (joy_msg->axes[TeleopManualJoy::axes::RIGHT_TRIGGER] < 0)
         {
             // bucket ladder buckets reverse
-            vel_msg->data[0] = joy_msg->axes[TeleopManualJoy::axes::RIGHT_TRIGGER] * 45.0;
+            vel_msg->data[0] = joy_msg->axes[TeleopManualJoy::axes::RIGHT_TRIGGER];
         }
         else
         {
@@ -122,6 +124,7 @@ namespace teleop_manual_joy
             vel_msg->data[0] = 0;
         }
 
+        // publish velocity
         publisher_vel_->publish(std::move(vel_msg));
 
     }
