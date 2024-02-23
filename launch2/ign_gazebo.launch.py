@@ -68,8 +68,10 @@ def launch_setup(context: LaunchContext):
             package='ros_gz_bridge',
             executable='parameter_bridge',
             arguments=[
+                '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
                 '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
                 '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+                '/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
             ],
             remappings=[
                 ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
@@ -108,10 +110,24 @@ def launch_setup(context: LaunchContext):
         arguments=["velocity_controllers", "-c", "/controller_manager"],
     )
 
+    static_transform_publisher_spawner = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "base_link",
+                        "--child-frame-id", "opsrey_ros/guide_frame/lidar_sensor"]
+    )
+
     delayed_joint_broad_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[joint_state_broadcaster],
+        )
+    )
+
+    delayed_static_transform_publisher_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_spawner],
         )
     )
 
@@ -139,6 +155,7 @@ def launch_setup(context: LaunchContext):
     nodes = [
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
+        delayed_static_transform_publisher_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
         delayed_velocity_spawner,
