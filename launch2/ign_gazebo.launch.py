@@ -15,6 +15,7 @@ def launch_setup(context: LaunchContext):
     filename = 'robot.urdf.xacro'
     pkg_name = 'osprey_ros'
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
+    slam_params_file = os.path.join(pkg_path, 'config', 'slam_toolbox.yaml')
     classic = eval(context.perform_substitution(LaunchConfiguration('classic')).title())
     which_gazebo = 'gazebo' if classic else 'ign_gazebo'
     world_file = context.perform_substitution(LaunchConfiguration('world')) + '.world'
@@ -110,6 +111,13 @@ def launch_setup(context: LaunchContext):
         arguments=["velocity_controllers", "-c", "/controller_manager"],
     )
 
+    slam_toolbox_node = Node(
+        package='slam_toolbox',
+        executable='async_slam_toolbox_node',
+        output='screen',
+        parameters=[ slam_params_file, {'use_sim_time': True} ],
+    )
+
     static_transform_publisher_spawner = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -121,6 +129,13 @@ def launch_setup(context: LaunchContext):
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[joint_state_broadcaster],
+        )
+    )
+
+    delayed_slam_toolbox_node_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[slam_toolbox_node],
         )
     )
 
@@ -155,6 +170,7 @@ def launch_setup(context: LaunchContext):
     nodes = [
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
+        delayed_slam_toolbox_node_spawner,
         delayed_static_transform_publisher_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
