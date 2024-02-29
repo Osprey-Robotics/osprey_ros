@@ -80,9 +80,6 @@ namespace teleop_manual_joy
             // subscriber - the joy topic we listen to for joystick buttons
             rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr subscription_;
 
-            // timer for publishing messages to publishers, master timer for all
-            rclcpp::TimerBase::SharedPtr timer_;
-
             /**
              * @brief Callback function for subscription fired when messages
              *        on the joy topic are heard
