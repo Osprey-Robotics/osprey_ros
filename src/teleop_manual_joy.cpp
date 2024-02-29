@@ -4,12 +4,8 @@
  *  you may not use this file except in compliance with the License.
  */
 
-#include <chrono>
-#include <functional>
-
 #include "teleop_manual_joy.hpp"
 
-using namespace std::chrono_literals;
 using std::placeholders::_1;
 
 namespace teleop_manual_joy
