@@ -71,8 +71,6 @@ namespace teleop_manual_joy
             virtual ~TeleopManualJoy();
 
         private:
-            size_t count_;
-
             // publishers - topics we publish commands to; cmd_vel, gpio, positions, and velocities
             rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_cmd_vel_;
             rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_gpio_;
