@@ -87,6 +87,11 @@ def launch_setup(context: LaunchContext):
         parameters=[robot_description],
     )
 
+    autonomy_spawner = Node(
+        package="osprey_ros",
+        executable="autonomy_node",
+    )
+
     diff_drive_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -146,6 +151,13 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_autonomy_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster,
+            on_exit=[autonomy_spawner],
+        )
+    )
+
     delayed_diff_drive_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster,
@@ -172,6 +184,7 @@ def launch_setup(context: LaunchContext):
         delayed_joint_broad_spawner,
         delayed_slam_toolbox_node_spawner,
         delayed_static_transform_publisher_spawner,
+        delayed_autonomy_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
         delayed_velocity_spawner,
