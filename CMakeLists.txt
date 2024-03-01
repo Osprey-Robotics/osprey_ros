@@ -75,6 +75,15 @@ add_library(robot_hardware_interface
   src/robot_hardware_interface.cpp
 )
 
+add_library(autonomy
+  SHARED
+  src/autonomy.cpp
+)
+
+add_executable(autonomy_node
+  src/autonomy_node.cpp
+)
+
 add_library(teleop_manual_joy
   SHARED
   src/teleop_manual_joy.cpp
@@ -98,15 +107,18 @@ add_executable(test-usb-motors
 
 ament_target_dependencies(gpio_controller ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot_hardware_interface ${INCLUDE_DEPENDS})
+ament_target_dependencies(autonomy ${INCLUDE_DEPENDS})
 ament_target_dependencies(teleop_manual_joy ${INCLUDE_DEPENDS})
 
 target_link_libraries(robot gpio)
 target_link_libraries(robot_hardware_interface gpio robot usb-1.0)
+target_link_libraries(autonomy_node autonomy)
 target_link_libraries(teleop_manual_joy_node teleop_manual_joy)
 target_link_libraries(test-gpio-limit-switches gpio robot)
 target_link_libraries(test-gpio-relays gpio robot)
 target_link_libraries(test-usb-motors robot usb-1.0)
 
+rclcpp_components_register_nodes(autonomy "osprey_ros::Autonomy")
 rclcpp_components_register_nodes(teleop_manual_joy "teleop_manual_joy::TeleopManualJoy")
 
 ################################################################################
@@ -124,6 +136,8 @@ install(
 )
 
 set(INSTALL_TARGETS
+  autonomy
+  autonomy_node
   gpio
   gpio_controller
   robot
