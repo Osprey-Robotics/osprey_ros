@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <xacro:property name="collision_multiplier" value="2" />
+
     <xacro:property name="limit_effort" value="100" />
     <xacro:property name="limit_velocity" value="10" />
 
@@ -60,7 +62,7 @@
     <link name="chassis">
         <collision>
             <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+                <box size="${chassis_length * collision_multiplier} ${chassis_width * collision_multiplier} ${chassis_height}"/>
             </geometry>
         </collision>
         <visual>
@@ -86,7 +88,7 @@
     <link name="front_left_wheel">
         <collision>
             <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                <cylinder length="${wheel_length * collision_multiplier}" radius="${wheel_radius}" />
             </geometry>
         </collision>
         <visual>
@@ -112,7 +114,7 @@
     <link name="front_right_wheel">
         <collision>
             <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                <cylinder length="${wheel_length * collision_multiplier}" radius="${wheel_radius}" />
             </geometry>
         </collision>
         <visual>
@@ -138,7 +140,7 @@
     <link name="rear_left_wheel">
         <collision>
             <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                <cylinder length="${wheel_length * collision_multiplier}" radius="${wheel_radius}" />
             </geometry>
         </collision>
         <visual>
@@ -164,7 +166,7 @@
     <link name="rear_right_wheel">
         <collision>
             <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                <cylinder length="${wheel_length * collision_multiplier}" radius="${wheel_radius}" />
             </geometry>
         </collision>
         <visual>
@@ -191,7 +193,7 @@
         <collision>
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
             <geometry>
-                <box size="${ladder_length} ${ladder_width} ${ladder_height}"/>
+                <box size="${ladder_length * collision_multiplier} ${ladder_width * collision_multiplier} ${ladder_height}"/>
             </geometry>
             <material name="gray"/>
         </collision>
@@ -243,7 +245,7 @@
         <collision>
             <origin xyz="0 0 ${ladder_height/2}" rpy="0 0 0"/>
             <geometry>
-                <box size="${buckets_length} ${buckets_width} ${buckets_height}"/>
+                <box size="${buckets_length * collision_multiplier} ${buckets_width * collision_multiplier} ${buckets_height}"/>
             </geometry>
         </collision>
         <visual>
