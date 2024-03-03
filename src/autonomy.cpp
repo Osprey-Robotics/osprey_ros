@@ -13,8 +13,8 @@ namespace osprey_ros
     Autonomy::Autonomy(const rclcpp::NodeOptions &options)
         : Node("autonomy", options)
     {
-        // publish to autonomy topic
-        publisher_goal_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("/goal_pose", 10);
+        // publish to /goal_pose topic
+        publisher_goal_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("goal_pose", 10);
 
         // subscribe to /autonomy topic
         subscription_autonomy_ =
