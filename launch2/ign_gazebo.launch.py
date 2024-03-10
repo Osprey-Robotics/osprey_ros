@@ -72,7 +72,7 @@ def launch_setup(context: LaunchContext):
                 '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
                 '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
                 '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
-                '/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+                '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
             ],
             remappings=[
                 ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
