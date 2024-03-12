@@ -80,20 +80,12 @@ rviz2 -d src/osprey_ros/sim/robot.rviz
 
 ### Running Gazebo
 Gazebo is used to see what we see, how the robot operates in a simulated world,
-physical or simulated, start either, and then run the following command. The
-robot will not appear if you do not start osprey_ros first!
+physical or simulated, start either, and then run the following command. This
+will launch a full instance of the robot, so do not run in addition to osprey_ros.
 
-There are two versions of Gazebo, classic and the newer formerly IGN/Ignition
-Gazebo, now called Gazebo again, but packaged versions are still prefixed
-with ign. To start the new gazebo is as follows, and classic requires a
-command line argument to be passed.
 #### IGN Gazebo
 ```bash
 ros2 launch osprey_ros ign_gazebo.launch.py
-```
-#### Gazebo Classic
-```bash
-ros2 launch osprey_ros ign_gazebo.launch.py classic:=true
 ```
 
 ## Robot Human Controllers
