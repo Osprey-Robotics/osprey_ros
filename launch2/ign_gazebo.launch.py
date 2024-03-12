@@ -16,8 +16,6 @@ def launch_setup(context: LaunchContext):
     pkg_name = 'osprey_ros'
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
     slam_params_file = os.path.join(pkg_path, 'config', 'slam_toolbox.yaml')
-    classic = eval(context.perform_substitution(LaunchConfiguration('classic')).title())
-    which_gazebo = 'gazebo' if classic else 'ign_gazebo'
     world_file = context.perform_substitution(LaunchConfiguration('world')) + '.world'
     world = os.path.join(pkg_path,'worlds', world_file)
     xacro_file = os.path.join(pkg_path,'description',filename)
@@ -28,57 +26,39 @@ def launch_setup(context: LaunchContext):
             " ",
             xacro_file,
             " ",
-            "use_hardware:=",
-            which_gazebo,
+            "use_hardware:=ign_gazebo",
         ]
     )
     robot_description = {'robot_description': robot_description_content}
 
-    if which_gazebo == 'gazebo' :
-        gazebo = IncludeLaunchDescription(
-                    PythonLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-                        launch_arguments={
-                            'pause' : 'true',
-                            'world' : world,
-                        }.items(),
+    gazebo = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('ros_gz_sim'), 'launch'), '/gz_sim.launch.py']),
+                    launch_arguments={
+                        'pause' : 'true',
+                        'gz_args' : world,
+                    }.items(),
                 )
 
-        create_entity = Node(package='gazebo_ros',
-                             executable='spawn_entity.py',
-                             arguments=['-topic', '/robot_description',
-                                        '-entity', 'robot'],
-                             output='screen')
-
-    else :
-        gazebo = IncludeLaunchDescription(
-                    PythonLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('ros_gz_sim'), 'launch'), '/gz_sim.launch.py']),
-                        launch_arguments={
-                            'pause' : 'true',
-                            'gz_args' : world,
-                        }.items(),
-                    )
-
-        create_entity = Node(package='ros_gz_sim',
-                            executable='create',
-                            arguments=['-topic', '/robot_description',
-                                       '-entity', 'robot'],
-                            output='screen')
-        bridge = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            arguments=[
-                '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
-                '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
-                '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
-                '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
-            ],
-            remappings=[
-                ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
-                ("/diff_drive_controller/odom", "/odom"),
-            ],
-        )
+    create_entity = Node(package='ros_gz_sim',
+                        executable='create',
+                        arguments=['-topic', '/robot_description',
+                                    '-entity', 'robot'],
+                        output='screen')
+    bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+            '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+            '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+            '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+        ],
+        remappings=[
+            ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
+            ("/diff_drive_controller/odom", "/odom"),
+        ],
+    )
 
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
@@ -190,24 +170,14 @@ def launch_setup(context: LaunchContext):
         delayed_velocity_spawner,
         gazebo,
         create_entity,
+        bridge,
     ]
-
-    if which_gazebo != 'gazebo' :
-        nodes = nodes + [bridge]
 
     return nodes
 
 def generate_launch_description():
     # Declare arguments
     declared_arguments = []
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "classic",
-            default_value="False",
-            description="Start classic Gazebo instead of IGN Gazebo.",
-        )
-    )
-
     declared_arguments.append(
         DeclareLaunchArgument(
             "world",
