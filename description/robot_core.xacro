@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:property name="collision_multiplier" value="2" />
+    <xacro:property name="collision_multiplier" value="1.5" />
 
     <xacro:property name="limit_effort" value="100" />
     <xacro:property name="limit_velocity" value="10" />
