@@ -147,6 +147,8 @@
             <plugin filename="libignition-gazebo6-sensors-system.so" name="ignition::gazebo::systems::Sensors">
                 <render_engine>ogre2</render_engine>
             </plugin>
+            <plugin filename="libgz_random_rocks.so" name="gz::sim::systems::GzRandomRocks">
+            </plugin>
         </gazebo>
     </xacro:if>
   </xacro:macro>
