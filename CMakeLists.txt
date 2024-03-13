@@ -19,8 +19,11 @@ endif()
 ################################################################################
 # Find ament packages and libraries for ament and system dependencies
 ################################################################################
+find_package(ignition-gazebo6 QUIET)
+
 set(INCLUDE_DEPENDS
   PkgConfig
+  ament_cmake
   hardware_interface
   control_msgs
   sensor_msgs
@@ -35,12 +38,29 @@ set(INCLUDE_DEPENDS
   joint_limits
 )
 
-find_package(ament_cmake REQUIRED)
+if( ignition-gazebo6_FOUND )
+    set(INCLUDE_DEPENDS
+        ${INCLUDE_DEPENDS}
+        ignition-cmake2
+        ignition-common4
+        ignition-gazebo6
+        ignition-math6
+        ignition-msgs8
+        ignition-physics5
+        ignition-plugin1
+        ignition-transport11
+        ignition-utils1
+        sdformat12
+    )
+endif()
 
 foreach(Dependency IN ITEMS ${INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
 
+if( ignition-gazebo6_FOUND )
+    pkg_search_module(ignition-cmake2 REQUIRED ignition-cmake2)
+endif()
 pkg_search_module(libusb-1.0 REQUIRED libusb-1.0)
 
 ################################################################################
@@ -53,10 +73,41 @@ endif()
 
 include_directories(include)
 
+if( ignition-gazebo6_FOUND )
+    include_directories(
+        ${IGNITION-CMAKE_DIR}
+        /usr/include/ignition/cmake2/
+        ${IGNITION-COMMON_INCLUDE_DIRS}
+        ${IGNITION-GAZEBO_INCLUDE_DIRS}
+        ${IGNITION-MATH_INCLUDE_DIRS}
+        ${IGNITION-MSGS_INCLUDE_DIRS}
+        ${IGNITION-PHYSICS_INCLUDE_DIRS}
+        ${IGNITION-PLUGIN_INCLUDE_DIRS}
+        ${IGNITION-TRANSPORT_INCLUDE_DIRS}
+        ${IGNITION-UTILS_INCLUDE_DIRS}
+        ${SDFormat_INCLUDE_DIRS}
+    )
+
+    link_directories(${IGNITION-CMAKE_LIBRARY_DIRS}
+        ${IGNITION-COMMON_LIBRARY_DIRS}
+        ${IGNITION-GAZEBO_LIBRARY_DIRS}
+        ${IGNITION-MATH_LIBRARY_DIRS}
+        ${IGNITION-MSGS_LIBRARY_DIRS}
+        ${IGNITION-PLUGIN_LIBRARY_DIRS}
+        ${IGNITION-PHYSICS_LIBRARY_DIRS}
+        ${IGNITION-TRANSPORT_LIBRARY_DIRS}
+        ${IGNITION-UTILS_LIBRARY_DIRS}
+        ${SDFormat_LIBRARY_DIRS}
+    )
+endif()
+
 # shared object libraries, lib*.so
 add_library(autonomy SHARED src/autonomy.cpp)
 add_library(gpio SHARED src/gpio.cpp)
 add_library(gpio_controller SHARED src/gpio_controller.cpp)
+if( ignition-gazebo6_FOUND )
+    add_library(gz_random_rocks SHARED src/gz_random_rocks.cpp)
+endif()
 add_library(robot
   SHARED
   src/usb.cpp
@@ -116,6 +167,13 @@ set(INSTALL_TARGETS
   teleop_manual_joy
   teleop_manual_joy_node
 )
+
+if( ignition-gazebo6_FOUND )
+    set(INSTALL_TARGETS
+        ${INSTALL_TARGETS}
+        gz_random_rocks
+    )
+endif()
 
 foreach(target IN ITEMS ${INSTALL_TARGETS})
   install(TARGETS ${target}
