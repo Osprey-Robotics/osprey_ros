@@ -103,11 +103,18 @@ def launch_setup(context: LaunchContext):
         parameters=[ slam_params_file, {'use_sim_time': True} ],
     )
 
-    static_transform_publisher_spawner = Node(
+    static_transform_publisher_lidar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             arguments= ["--frame-id", "base_link",
                         "--child-frame-id", "opsrey_ros/guide_frame/lidar_sensor"]
+    )
+
+    static_transform_publisher_odom = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "base_link",
+                        "--child-frame-id", "opsrey_ros/odom"]
     )
 
     delayed_joint_broad_spawner = RegisterEventHandler(
@@ -117,17 +124,24 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_static_transform_publisher_lidar = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_lidar],
+        )
+    )
+
+    delayed_static_transform_publisher_odom = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_odom],
+        )
+    )
+
     delayed_slam_toolbox_node_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[slam_toolbox_node],
-        )
-    )
-
-    delayed_static_transform_publisher_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=create_entity,
-            on_exit=[static_transform_publisher_spawner],
         )
     )
 
@@ -162,8 +176,9 @@ def launch_setup(context: LaunchContext):
     nodes = [
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
+        delayed_static_transform_publisher_lidar,
+        delayed_static_transform_publisher_odom,
         delayed_slam_toolbox_node_spawner,
-        delayed_static_transform_publisher_spawner,
         delayed_autonomy_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
