@@ -174,6 +174,9 @@ def launch_setup(context: LaunchContext):
     )
 
     nodes = [
+        gazebo,
+        create_entity,
+        bridge,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
         delayed_static_transform_publisher_lidar,
@@ -183,9 +186,6 @@ def launch_setup(context: LaunchContext):
         delayed_diff_drive_spawner,
         delayed_position_spawner,
         delayed_velocity_spawner,
-        gazebo,
-        create_entity,
-        bridge,
     ]
 
     return nodes
