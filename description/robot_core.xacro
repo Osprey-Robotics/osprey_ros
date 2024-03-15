@@ -260,6 +260,7 @@
         </xacro:inertial_box>
     </link>
 
+    <!-- Dump Bucket -->
     <joint name="bucket_dump_joint" type="prismatic">
         <parent link="chassis"/>
         <child link="bucket"/>
@@ -285,6 +286,7 @@
         </xacro:inertial_box>
     </link>
 
+    <!-- 360 Lidar -->
     <joint name="lidar_joint" type="fixed">
         <parent link="guide_frame"/>
         <child link="lidar"/>
