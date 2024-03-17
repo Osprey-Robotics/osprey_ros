@@ -49,6 +49,7 @@ def launch_setup(context: LaunchContext):
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
+            '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
             '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
@@ -57,6 +58,14 @@ def launch_setup(context: LaunchContext):
         remappings=[
             ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
             ("/diff_drive_controller/odom", "/odom"),
+        ],
+    )
+
+    image_bridge = Node(
+        package='ros_gz_image',
+        executable='image_bridge',
+        arguments=[
+            '/camera_info', '/depth_camera',
         ],
     )
 
@@ -103,6 +112,13 @@ def launch_setup(context: LaunchContext):
         parameters=[ slam_params_file, {'use_sim_time': True} ],
     )
 
+    static_transform_publisher_depth_camera = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "base_link",
+                        "--child-frame-id", "opsrey_ros/base_link/depth_camera"]
+    )
+
     static_transform_publisher_lidar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -121,6 +137,13 @@ def launch_setup(context: LaunchContext):
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[joint_state_broadcaster],
+        )
+    )
+
+    delayed_static_transform_publisher_depth_camera = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_depth_camera],
         )
     )
 
@@ -177,8 +200,10 @@ def launch_setup(context: LaunchContext):
         gazebo,
         create_entity,
         bridge,
+        image_bridge,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
+        delayed_static_transform_publisher_depth_camera,
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
         delayed_slam_toolbox_node_spawner,
