@@ -56,10 +56,6 @@ def launch_setup(context: LaunchContext):
             '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
         ],
-        remappings=[
-            ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
-            ("/diff_drive_controller/odom", "/odom"),
-        ],
     )
 
     image_bridge = Node(
