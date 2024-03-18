@@ -49,6 +49,7 @@ def launch_setup(context: LaunchContext):
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
+            '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
             '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
@@ -64,9 +65,7 @@ def launch_setup(context: LaunchContext):
     image_bridge = Node(
         package='ros_gz_image',
         executable='image_bridge',
-        arguments=[
-            '/camera_info', '/depth_camera',
-        ],
+        arguments=['/depth_camera'],
     )
 
     node_robot_state_publisher = Node(
