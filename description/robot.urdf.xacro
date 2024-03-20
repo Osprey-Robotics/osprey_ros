@@ -1,12 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="opsrey_ros">
 
+	<xacro:arg name="year" default="" />
 	<xacro:arg name="use_hardware" default="robot" />
 
 	<xacro:include filename="colors.xacro" />
 	<xacro:include filename="inertial_macros.xacro" />
-	<xacro:include filename="robot_core.xacro" />
-	<xacro:include filename="ros2_control.xacro" />
+
+    <xacro:macro name="robot_year" params="year">
+        <xacro:include filename="robot${year}_core.xacro" />
+        <xacro:include filename="robot${year}_ros2_control.xacro" />
+	    <xacro:ros2_control use_hardware="$(arg use_hardware)"/>
+    </xacro:macro>
 
     <xacro:macro name="gazebo" params="use_hardware">
       <xacro:if value="${use_hardware == 'ign_gazebo'}">
@@ -14,7 +19,7 @@
       </xacro:if>
     </xacro:macro>
 
+	<xacro:robot_year year="$(arg year)"/>
 	<xacro:gazebo use_hardware="$(arg use_hardware)"/>
-	<xacro:ros2_control use_hardware="$(arg use_hardware)"/>
 
 </robot>
