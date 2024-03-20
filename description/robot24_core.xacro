@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="collision_multiplier" value="1.5" />
+
+    <xacro:property name="limit_effort" value="100" />
+    <xacro:property name="limit_velocity" value="10" />
+
+    <xacro:property name="chassis_length" value="0.8128" />
+    <xacro:property name="chassis_height" value="0.0889" />
+    <xacro:property name="chassis_width" value="0.3556" />
+
+    <xacro:property name="wheel_gap" value="0.0127" />
+    <xacro:property name="wheel_length" value="0.1016" />
+    <xacro:property name="wheel_radius" value="0.1524" />
+    <xacro:property name="wheel_mass" value="0.0624" />
+    <xacro:property name="wheel_mesh_file" value="file://$(find osprey_ros)/meshes/robot24/wheel.dae" />
+    <xacro:property name="wheel_mesh_scale" value="0.001 0.001 0.001" />
+    <xacro:property name="wheel_offset_front" value="${-chassis_length/2 + 0.1778}" />
+    <xacro:property name="wheel_offset_rear" value="${chassis_length/2 - 0.2286}" />
+    <xacro:property name="wheel_offset_side" value="${wheel_length/2 + chassis_width/2 + wheel_gap}" />
+
+    <link name="base_link"></link>
+
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+    </joint>
+    <link name="base_footprint">
+        <parent link="base_link"/>
+    </link>
+
+    <!-- Main Body/Chassis -->
+    <joint name="chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+        <child link="chassis"/>
+    </joint>
+    <link name="chassis">
+        <collision>
+            <geometry>
+                <box size="${chassis_length * collision_multiplier} ${chassis_width * collision_multiplier} ${chassis_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-${chassis_length/2} ${chassis_length/2 - chassis_height - wheel_gap/2} -${chassis_width/2}" rpy="${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find osprey_ros)/meshes/robot24/chassis.dae" scale="0.8 0.8 0.8" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_box mass="2.5" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <!-- Front Left Wheel -->
+    <joint name="front_left_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="front_left_wheel"/>
+        <origin xyz="${wheel_offset_front} ${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
+    </joint>
+    <link name="front_left_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length * collision_multiplier}" radius="${wheel_radius}" />
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-${wheel_radius} -${wheel_radius} ${wheel_length/2}" rpy="-${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="${wheel_mesh_file}" scale="${wheel_mesh_scale}" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_length}" radius="${wheel_radius}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+    <!-- Front Right Wheel -->
+    <joint name="front_right_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="front_right_wheel"/>
+        <origin xyz="${wheel_offset_front} -${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
+        <axis xyz="0 0 -1"/>
+        <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
+    </joint>
+    <link name="front_right_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length * collision_multiplier}" radius="${wheel_radius}" />
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-${wheel_radius} ${wheel_radius} -${wheel_length/2}" rpy="${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="${wheel_mesh_file}" scale="${wheel_mesh_scale}" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_length}" radius="${wheel_radius}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+    <!-- Rear Left Wheel -->
+    <joint name="rear_left_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="rear_left_wheel"/>
+        <origin xyz="${wheel_offset_rear} ${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
+    </joint>
+    <link name="rear_left_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length * collision_multiplier}" radius="${wheel_radius}" />
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-${wheel_radius} -${wheel_radius} ${wheel_length/2}" rpy="-${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="${wheel_mesh_file}" scale="${wheel_mesh_scale}" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_length}" radius="${wheel_radius}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+    <!-- Rear Right Wheel -->
+    <joint name="rear_right_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="rear_right_wheel"/>
+        <origin xyz="${wheel_offset_rear} -${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
+        <axis xyz="0 0 -1"/>
+        <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
+    </joint>
+    <link name="rear_right_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_length * collision_multiplier}" radius="${wheel_radius}" />
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-${wheel_radius} ${wheel_radius} -${wheel_length/2}" rpy="${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="${wheel_mesh_file}" scale="${wheel_mesh_scale}" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_length}" radius="${wheel_radius}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+</robot>
