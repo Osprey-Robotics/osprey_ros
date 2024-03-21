@@ -17,6 +17,7 @@ def launch_setup(context: LaunchContext):
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
     slam_params_file = os.path.join(pkg_path, 'config', 'slam_toolbox.yaml')
     world_file = context.perform_substitution(LaunchConfiguration('world')) + '.world'
+    year = context.perform_substitution(LaunchConfiguration('year')).title()
     world = os.path.join(pkg_path,'worlds', world_file)
     xacro_file = os.path.join(pkg_path,'description',filename)
 
@@ -27,6 +28,9 @@ def launch_setup(context: LaunchContext):
             xacro_file,
             " ",
             "use_hardware:=ign_gazebo",
+            " ",
+            "year:=",
+            year,
         ]
     )
     robot_description = {'robot_description': robot_description_content}
@@ -205,8 +209,11 @@ def launch_setup(context: LaunchContext):
         delayed_autonomy_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
-        delayed_velocity_spawner,
     ]
+
+    if year == "":
+        nodes += [delayed_velocity_spawner,]
+
 
     return nodes
 
@@ -218,6 +225,13 @@ def generate_launch_description():
             "world",
             default_value="empty",
             description="The world the robot will be spawned within.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "year",
+            default_value="",
+            description="Year of robot to start",
         )
     )
 
