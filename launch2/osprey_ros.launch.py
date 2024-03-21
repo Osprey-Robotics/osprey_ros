@@ -14,8 +14,10 @@ def launch_setup(context: LaunchContext):
     filename = 'robot.urdf.xacro'
 
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
-    controller_params = os.path.join(pkg_path, 'config', 'robot_controllers.yaml')
     sim = eval(context.perform_substitution(LaunchConfiguration('sim')).title())
+    year = context.perform_substitution(LaunchConfiguration('year')).title()
+    controller_params = os.path.join(pkg_path, 'config', 'robot' + year + '_controllers.yaml')
+    print("controller_params ", controller_params)
     xacro_file = os.path.join(pkg_path,'description',filename)
     robot_description_content = Command(
         [
@@ -25,6 +27,9 @@ def launch_setup(context: LaunchContext):
             " ",
             "use_hardware:=",
             "mock" if sim else "robot",
+            " ",
+            "year:=",
+            year,
         ]
     )
     robot_description = {'robot_description': robot_description_content}
@@ -105,15 +110,18 @@ def launch_setup(context: LaunchContext):
         )
     )
 
-    return  [
+    nodes = [
         controller_manager,
-        gpio_controller_spawner,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
-        delayed_velocity_spawner,
     ]
+
+    if year == "":
+        nodes += [gpio_controller_spawner, delayed_velocity_spawner,]
+
+    return nodes
 
 def generate_launch_description():
     # Declare arguments
@@ -123,6 +131,13 @@ def generate_launch_description():
             "sim",
             default_value="False",
             description="Start with simulated mock hardware",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "year",
+            default_value="",
+            description="Year of robot to start",
         )
     )
 
