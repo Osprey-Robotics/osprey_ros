@@ -304,7 +304,7 @@
             <geometry>
                 <mesh filename="file://$(find osprey_ros)/meshes/rplidar.dae" scale="1 1 1" />
             </geometry>
-            <material name="gray"/>
+            <material name="black"/>
         </visual>
         <xacro:inertial_box mass="0.0001" x="${lidar_length}" y="${lidar_width}" z="${ladder_height}">
             <origin xyz="${lidar_length/2} ${lidar_width/2} ${ladder_height/2}" rpy="0 0 0"/>
