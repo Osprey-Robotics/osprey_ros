@@ -10,6 +10,10 @@
     <xacro:property name="chassis_height" value="0.0889" />
     <xacro:property name="chassis_width" value="0.3556" />
 
+    <xacro:property name="lidar_length" value="0.12954" />
+    <xacro:property name="lidar_height" value="0.07874" />
+    <xacro:property name="lidar_width" value="0.09906" />
+
     <xacro:property name="mesh_scale" value="0.001 0.001 0.001" />
 
     <xacro:property name="wheel_gap" value="0.0127" />
@@ -157,6 +161,32 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
+
+    <!-- 360 Lidar -->
+    <joint name="lidar_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="lidar"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="-${chassis_length/2} 0 0.6096" rpy="0 0 0"/>
+    </joint>
+    <link name="lidar">
+        <collision>
+            <geometry>
+                <box size="${lidar_length} ${lidar_width} ${lidar_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find osprey_ros)/meshes/rplidar.dae" scale="1 1 1" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_box mass="0.0001" x="${lidar_length}" y="${lidar_width}" z="0.6096">
+            <origin xyz="${lidar_length/2} ${lidar_width/2} 0.6096" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
 
     <!-- 3D Camera -->
     <joint name="depth_camera_joint" type="fixed">
