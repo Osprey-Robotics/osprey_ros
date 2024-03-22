@@ -118,11 +118,15 @@ def launch_setup(context: LaunchContext):
                         "--child-frame-id", "opsrey_ros/base_link/depth_camera"]
     )
 
+    parent = "guide_frame"
+    if year == "24":
+        parent = "base_link"
+
     static_transform_publisher_lidar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             arguments= ["--frame-id", "base_link",
-                        "--child-frame-id", "opsrey_ros/guide_frame/lidar_sensor"]
+                        "--child-frame-id", "opsrey_ros/" + parent + "/lidar_sensor"]
     )
 
     static_transform_publisher_odom = Node(
