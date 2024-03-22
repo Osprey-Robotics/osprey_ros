@@ -158,4 +158,25 @@
         </xacro:inertial_cylinder>
     </link>
 
+    <!-- 3D Camera -->
+    <joint name="depth_camera_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="depth_camera"/>
+        <origin xyz="${chassis_length/2 + 0.0254} 0 0" rpy="0 0 0"/>
+    </joint>
+    <link name="depth_camera">
+        <visual>
+            <geometry>
+                <box size="0.010 0.03 0.03"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.002" length="0.1"/>
+            </geometry>
+        </visual>
+    </link>
+
 </robot>
