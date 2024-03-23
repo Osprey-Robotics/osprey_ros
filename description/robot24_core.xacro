@@ -225,7 +225,7 @@
         <parent link="chassis"/>
         <child link="lidar"/>
         <axis xyz="0 0 1"/>
-        <origin xyz="-${chassis_length/2} 0 0.6096" rpy="0 0 0"/>
+        <origin xyz="-${chassis_length/2} 0 0.4572" rpy="0 0 0"/>
     </joint>
     <link name="lidar">
         <collision>
