@@ -6,6 +6,11 @@
     <xacro:property name="limit_effort" value="100" />
     <xacro:property name="limit_velocity" value="10" />
 
+    <xacro:property name="bucket_frame_length" value="0.0508" /> <!-- depth -->
+    <xacro:property name="bucket_frame_height" value="0.4064" />
+    <xacro:property name="bucket_frame_width" value="${chassis_width}" />
+    <xacro:property name="bucket_frame_offset" value="${chassis_length/2 + buckets_width/10}" />
+
     <xacro:property name="chassis_length" value="0.8128" />
     <xacro:property name="chassis_height" value="0.0889" />
     <xacro:property name="chassis_width" value="0.3556" />
@@ -160,6 +165,32 @@
         <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_length}" radius="${wheel_radius}">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
+    </link>
+
+    <!-- Bucket Frame -->
+    <joint name="bucket_frame_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="bucket_frame"/>
+        <origin xyz="${chassis_length/4 + 0.0381} -0.00635 ${wheel_radius + 0.0277}" rpy="0 0 0"/>
+    </joint>
+    <link name="bucket_frame">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${bucket_frame_length * collision_multiplier} ${bucket_frame_width * collision_multiplier} ${bucket_frame_height}"/>
+            </geometry>
+            <material name="gray"/>
+        </collision>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find osprey_ros)/meshes/robot24/exc_dep_frame.dae" scale="${mesh_scale}" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_box mass="0.05" x="${bucket_frame_length}" y="${bucket_frame_width}" z="${bucket_frame_height}">
+            <origin xyz="0 0 ${bucket_frame_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
     </link>
 
     <!-- 360 Lidar -->
