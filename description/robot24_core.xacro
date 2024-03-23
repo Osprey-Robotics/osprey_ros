@@ -175,14 +175,12 @@
     </joint>
     <link name="bucket_frame">
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
                 <box size="${bucket_frame_length * collision_multiplier} ${bucket_frame_width * collision_multiplier} ${bucket_frame_height}"/>
             </geometry>
             <material name="gray"/>
         </collision>
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
                 <mesh filename="file://$(find osprey_ros)/meshes/robot24/exc_dep_frame.dae" scale="${mesh_scale}" />
             </geometry>
@@ -207,7 +205,6 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
                 <mesh filename="file://$(find osprey_ros)/meshes/rplidar.dae" scale="1 1 1" />
             </geometry>
@@ -217,7 +214,6 @@
             <origin xyz="${lidar_length/2} ${lidar_width/2} 0.6096" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
-
 
     <!-- 3D Camera -->
     <joint name="depth_camera_joint" type="fixed">
