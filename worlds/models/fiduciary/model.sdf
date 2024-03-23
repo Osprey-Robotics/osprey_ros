@@ -6,16 +6,16 @@
       <collision name='fiduciary_collision'>
         <geometry>
           <cylinder>
-            <length>0.4572</length> <!-- 18"/1.5' -->
+            <length>0.6096</length> <!-- 24"/2' -->
             <radius>0.1524</radius>
           </cylinder>
         </geometry>
       </collision>
       <visual name='fiduciary_visual'>
-        <pose>0 0 0.8382 0 0 0</pose> <!-- 33"/~2.5' -->
+        <pose>0 0 0.7239 0 0 0</pose> <!-- 28.5"/~2.5' -->
         <geometry>
           <cylinder>
-            <length>0.4572</length> <!-- 18"/1.5' -->
+            <length>0.6096</length> <!-- 24"/2' -->
             <radius>0.1524</radius>
           </cylinder>
         </geometry>
@@ -33,16 +33,16 @@
       <collision name='fiduciary_stand_collision'>
         <geometry>
           <cylinder>
-            <length>0.6096</length> <!-- 24"/2' -->
+            <length>0.4572</length> <!-- 18"/1.5' -->
             <radius>0.0508</radius>
           </cylinder>
         </geometry>
       </collision>
       <visual name='fiduciary_stand_visual'>
-        <pose>0 0 0.3048 0 0 0</pose> <!-- 12"/1' -->
+        <pose>0 0 0.2286 0 0 0</pose> <!-- 9"/0.75' -->
         <geometry>
           <cylinder>
-            <length>0.6096</length> <!-- 24"/2' -->
+            <length>0.4572</length> <!-- 18"/1.5' -->
             <radius>0.0508</radius>
           </cylinder>
         </geometry>
