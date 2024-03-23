@@ -23,7 +23,7 @@
 
     <xacro:property name="wheel_gap" value="0.0127" />
     <xacro:property name="wheel_length" value="0.1016" />
-    <xacro:property name="wheel_radius" value="0.1397" />
+    <xacro:property name="wheel_radius" value="0.14224" />
     <xacro:property name="wheel_mass" value="0.0624" />
     <xacro:property name="wheel_mesh_file" value="file://$(find osprey_ros)/meshes/robot24/wheel.dae" />
     <xacro:property name="wheel_offset_front" value="${chassis_length/2 - 0.1024}" />
