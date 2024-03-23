@@ -10,7 +10,7 @@
     <xacro:property name="bucket_height" value="0.254" />
     <xacro:property name="bucket_width" value="0.254" />
 
-    <xacro:property name="bucket_frame_length" value="0.0508" /> <!-- depth -->
+    <xacro:property name="bucket_frame_length" value="0.1524" /> <!-- depth -->
     <xacro:property name="bucket_frame_height" value="0.4064" />
     <xacro:property name="bucket_frame_width" value="${chassis_width}" />
     <xacro:property name="bucket_frame_offset" value="${chassis_length/2 + buckets_width/10}" />
