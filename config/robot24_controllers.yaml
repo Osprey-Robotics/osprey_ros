@@ -25,4 +25,9 @@ diff_drive_controller:
     enable_odom_tf: true
 
     use_stamped_vel: false
+
+position_controllers:
+  ros__parameters:
+    joints:
+      - bucket_joint
     
