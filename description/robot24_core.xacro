@@ -6,6 +6,10 @@
     <xacro:property name="limit_effort" value="100" />
     <xacro:property name="limit_velocity" value="10" />
 
+    <xacro:property name="bucket_length" value="0.3556" /> <!-- depth -->
+    <xacro:property name="bucket_height" value="0.254" />
+    <xacro:property name="bucket_width" value="0.254" />
+
     <xacro:property name="bucket_frame_length" value="0.0508" /> <!-- depth -->
     <xacro:property name="bucket_frame_height" value="0.4064" />
     <xacro:property name="bucket_frame_width" value="${chassis_width}" />
@@ -188,6 +192,31 @@
         </visual>
         <xacro:inertial_box mass="0.05" x="${bucket_frame_length}" y="${bucket_frame_width}" z="${bucket_frame_height}">
             <origin xyz="0 0 ${bucket_frame_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <!-- Dig/Dump Bucket -->
+    <joint name="bucket_joint" type="prismatic">
+        <parent link="bucket_frame"/>
+        <child link="bucket"/>
+        <limit lower="-1"  upper="2"  velocity="0.1"  effort="${limit_effort}"  />
+        <axis xyz="0 0 1"/>
+        <origin xyz="-${bucket_length/2 + bucket_frame_length/2} 0 -${bucket_height/2}" rpy="0 0 0"/>
+    </joint>
+    <link name="bucket">
+        <collision>
+            <geometry>
+                <box size="${bucket_length} ${bucket_width} ${bucket_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find osprey_ros)/meshes/robot24/bucket.dae" scale="${mesh_scale}" />
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <xacro:inertial_box mass="0.1" x="${bucket_length}" y="${bucket_width}" z="${bucket_height}">
+            <origin xyz="${chassis_length/2} 0 ${bucket_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
 
