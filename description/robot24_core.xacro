@@ -190,7 +190,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="1" x="${bucket_frame_length}" y="${bucket_frame_width}" z="${bucket_frame_height}">
+        <xacro:inertial_box mass="1.5" x="${bucket_frame_length}" y="${bucket_frame_width}" z="${bucket_frame_height}">
             <origin xyz="0 0 ${bucket_frame_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
