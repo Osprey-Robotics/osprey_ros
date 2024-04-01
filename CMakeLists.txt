@@ -124,6 +124,7 @@ add_executable(autonomy_node src/autonomy_node.cpp)
 add_executable(teleop_manual_joy_node src/teleop_manual_joy_node.cpp)
 add_executable(test-gpio-limit-switches src/tests/test-gpio-limit-switches.cpp)
 add_executable(test-gpio-relays src/tests/test-gpio-relays.cpp)
+add_executable(test-usb-motors24 src/tests/test-usb-motors24.cpp)
 add_executable(test-usb-motors src/test-usb-motors.cpp)
 
 # add ROS dependencies
@@ -144,6 +145,7 @@ target_link_libraries(teleop_manual_joy_node teleop_manual_joy)
 target_link_libraries(test-gpio-limit-switches gpio robot)
 target_link_libraries(test-gpio-relays gpio robot)
 target_link_libraries(test-usb-motors robot usb-1.0)
+target_link_libraries(test-usb-motors24 robot usb-1.0)
 
 # register ROS nodes
 rclcpp_components_register_nodes(autonomy "osprey_ros::Autonomy")
