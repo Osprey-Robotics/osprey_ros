@@ -1,0 +1,10 @@
+<library path="robot_hardware_interface">
+  <class name="robot_hardware_interface/Robot24SystemHardware"
+         type="robot_hardware_interface::Robot24SystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      A ros2_control system hardware interface-type for Osprey Robotics 2024 Robot.
+      It uses velocity command and position state interfaces.
+    </description>
+  </class>
+</library>
