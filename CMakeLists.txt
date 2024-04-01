@@ -108,13 +108,15 @@ add_library(gpio_controller SHARED src/gpio_controller.cpp)
 if( ignition-gazebo6_FOUND )
     add_library(gz_random_rocks SHARED src/gz_random_rocks.cpp)
 endif()
-add_library(robot
+add_library(core
   SHARED
   src/usb.cpp
   src/joint.cpp
-  src/robot.cpp
 )
+add_library(robot SHARED src/robot.cpp)
+add_library(robot24 SHARED  src/robot24.cpp)
 add_library(robot_hardware_interface SHARED src/robot_hardware_interface.cpp)
+add_library(robot24_hardware_interface SHARED src/robot24_hardware_interface.cpp)
 add_library(teleop_manual_joy SHARED src/teleop_manual_joy.cpp)
 
 # executable binaries
@@ -127,13 +129,17 @@ add_executable(test-usb-motors src/test-usb-motors.cpp)
 # add ROS dependencies
 ament_target_dependencies(gpio_controller ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot_hardware_interface ${INCLUDE_DEPENDS})
+ament_target_dependencies(robot24_hardware_interface ${INCLUDE_DEPENDS})
 ament_target_dependencies(autonomy ${INCLUDE_DEPENDS})
 ament_target_dependencies(teleop_manual_joy ${INCLUDE_DEPENDS})
 
 # link executable binaries to shared object libraries
 target_link_libraries(autonomy_node autonomy)
-target_link_libraries(robot gpio)
+target_link_libraries(core usb-1.0)
+target_link_libraries(robot core gpio)
 target_link_libraries(robot_hardware_interface gpio robot usb-1.0)
+target_link_libraries(robot24 core)
+target_link_libraries(robot24_hardware_interface gpio robot24 usb-1.0)
 target_link_libraries(teleop_manual_joy_node teleop_manual_joy)
 target_link_libraries(test-gpio-limit-switches gpio robot)
 target_link_libraries(test-gpio-relays gpio robot)
@@ -148,6 +154,7 @@ rclcpp_components_register_nodes(teleop_manual_joy "teleop_manual_joy::TeleopMan
 ################################################################################
 pluginlib_export_plugin_description_file(controller_interface plugins/gpio_controller.xml)
 pluginlib_export_plugin_description_file(hardware_interface plugins/robot_hardware_interface.xml)
+pluginlib_export_plugin_description_file(hardware_interface plugins/robot24_hardware_interface.xml)
 
 ################################################################################
 # Install
@@ -164,6 +171,8 @@ set(INSTALL_TARGETS
   gpio_controller
   robot
   robot_hardware_interface
+  robot24
+  robot24_hardware_interface
   teleop_manual_joy
   teleop_manual_joy_node
 )
