@@ -108,7 +108,7 @@ add_library(gpio_controller SHARED src/gpio_controller.cpp)
 if( ignition-gazebo6_FOUND )
     add_library(gz_random_rocks SHARED src/gz_random_rocks.cpp)
 endif()
-add_library(core
+add_library(robot-core
   SHARED
   src/usb.cpp
   src/joint.cpp
@@ -136,10 +136,10 @@ ament_target_dependencies(teleop_manual_joy ${INCLUDE_DEPENDS})
 
 # link executable binaries to shared object libraries
 target_link_libraries(autonomy_node autonomy)
-target_link_libraries(core usb-1.0)
-target_link_libraries(robot core gpio)
+target_link_libraries(robot-core usb-1.0)
+target_link_libraries(robot robot-core gpio)
 target_link_libraries(robot_hardware_interface gpio robot usb-1.0)
-target_link_libraries(robot24 core)
+target_link_libraries(robot24 robot-core)
 target_link_libraries(robot24_hardware_interface gpio robot24 usb-1.0)
 target_link_libraries(teleop_manual_joy_node teleop_manual_joy)
 target_link_libraries(test-gpio-limit-switches gpio robot)
@@ -171,6 +171,7 @@ set(INSTALL_TARGETS
   autonomy_node
   gpio
   gpio_controller
+  robot-core
   robot
   robot_hardware_interface
   robot24
