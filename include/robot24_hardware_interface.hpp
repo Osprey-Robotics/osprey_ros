@@ -4,8 +4,8 @@
  *  you may not use this file except in compliance with the License.
  */
 
-#ifndef OSPREY_ROBOTICS__ROBOT_HARDWARE_INTERFACE_HPP_
-#define OSPREY_ROBOTICS__ROBOT_HARDWARE_INTERFACE_HPP_
+#ifndef OSPREY_ROBOTICS__ROBOT24_HARDWARE_INTERFACE_HPP_
+#define OSPREY_ROBOTICS__ROBOT24_HARDWARE_INTERFACE_HPP_
 
 #include <memory>
 #include <string>
@@ -22,7 +22,7 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-#include "robot.hpp"
+#include "robot24.hpp"
 
 const char *CLASS_NAME = "Robot24SystemHardware";
 
