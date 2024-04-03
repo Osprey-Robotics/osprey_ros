@@ -4,8 +4,8 @@
  *  you may not use this file except in compliance with the License.
  */
 
-#ifndef OSPREY_ROBOTICS__ROBOT_HPP
-#define OSPREY_ROBOTICS__ROBOT_HPP
+#ifndef OSPREY_ROBOTICS__ROBOT24_HPP
+#define OSPREY_ROBOTICS__ROBOT24_HPP
 
 #include <string>
 
