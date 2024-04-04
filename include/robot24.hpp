@@ -18,7 +18,7 @@ const std::string SERIAL_FRONT_LEFT_1 = "206B376F5557";
 const std::string SERIAL_BACK_LEFT_2 = "2052376E5058";
 const std::string SERIAL_FRONT_RIGHT_3 = "206F37635557";
 const std::string SERIAL_BACK_RIGHT_4 = "205C37535058";
-// const std::string SERIAL_DEPOSITION = "";
+const std::string SERIAL_DEPOSITION = "206D37675557";
 
 // motor speed multipliers min/max -50.0/50.0
 const _Float32 SPEED_MULTIPLIER_DEPOSITION = 30.0;
