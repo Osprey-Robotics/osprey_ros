@@ -61,19 +61,8 @@ namespace robot24_hardware_interface
                              hardware_interface::HW_IF_VELOCITY);
                 return hardware_interface::CallbackReturn::ERROR;
             }
-            else if (joint.name.find("wheel") == std::string::npos &&
-                     joint.name.find("buckets") == std::string::npos &&
-                     joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
-            {
-                RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
-                             "Joint '%s' has %zu command interfaces found. 2 expected.",
-                             joint.name.c_str(),
-                             joint.command_interfaces.size());
-                return hardware_interface::CallbackReturn::ERROR;
-            }
 
-            if ((joint.name.find("wheel") != std::string::npos ||
-                 joint.name.find("buckets") != std::string::npos) &&
+            if (joint.name.find("wheel") != std::string::npos &&
                 joint.state_interfaces.size() != 2)
             {
                 RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
@@ -93,8 +82,7 @@ namespace robot24_hardware_interface
                 return hardware_interface::CallbackReturn::ERROR;
             }
 
-            if ((joint.name.find("wheel") != std::string::npos ||
-                 joint.name.find("buckets") != std::string::npos) &&
+            if (joint.name.find("wheel") != std::string::npos &&
                 joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
             {
                 RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
@@ -120,14 +108,10 @@ namespace robot24_hardware_interface
                 hardware_interface::StateInterface(info_.joints[i].name,
                                                    hardware_interface::HW_IF_POSITION,
                                                    &hw_positions_[i]));
-            if(info_.joints[i].name.find("wheel") != std::string::npos ||
-               info_.joints[i].name.find("buckets") != std::string::npos)
-            {
-                state_interfaces.emplace_back(
-                    hardware_interface::StateInterface(info_.joints[i].name,
-                                                    hardware_interface::HW_IF_VELOCITY,
-                                                    &hw_velocities_[i]));
-            }
+            state_interfaces.emplace_back(
+                hardware_interface::StateInterface(info_.joints[i].name,
+                                                   hardware_interface::HW_IF_VELOCITY,
+                                                   &hw_velocities_[i]));
         }
         return state_interfaces;
     }
@@ -139,8 +123,7 @@ namespace robot24_hardware_interface
         // joints
         for (auto i = 0u; i < info_.joints.size(); i++)
         {
-            if (info_.joints[i].name.find("wheel") != std::string::npos ||
-                info_.joints[i].name.find("buckets") != std::string::npos)
+            if (info_.joints[i].name.find("wheel") != std::string::npos)
             {
                 command_interfaces.emplace_back(
                     hardware_interface::CommandInterface(info_.joints[i].name,
@@ -207,10 +190,10 @@ namespace robot24_hardware_interface
     hardware_interface::return_type Robot24SystemHardware::read(
         const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
-        // for (std::size_t i = 0; i < hw_velocities_.size(); i++)
-        // {
-        //     osprey_robotics::Joint joint = robot_.getJoint(info_.joints[i].name);
-        // }
+        for (std::size_t i = 0; i < hw_velocities_.size(); i++)
+        {
+            osprey_robotics::Joint joint = robot_.getJoint(info_.joints[i].name);
+        }
 
         return hardware_interface::return_type::OK;
     }
