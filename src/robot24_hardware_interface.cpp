@@ -16,7 +16,7 @@
 
 #include "robot24_hardware_interface.hpp"
 
-namespace robot_hardware_interface
+namespace robot24_hardware_interface
 {
     hardware_interface::CallbackReturn Robot24SystemHardware::on_init(
         const hardware_interface::HardwareInfo &info)
@@ -215,7 +215,7 @@ namespace robot_hardware_interface
         return hardware_interface::return_type::OK;
     }
 
-    hardware_interface::return_type robot_hardware_interface::Robot24SystemHardware::write(
+    hardware_interface::return_type robot24_hardware_interface::Robot24SystemHardware::write(
         const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
         for (auto i = 0u; i < info_.joints.size(); i++)
@@ -246,5 +246,5 @@ namespace robot_hardware_interface
 }
 
 #include "pluginlib/class_list_macros.hpp"
-PLUGINLIB_EXPORT_CLASS(robot_hardware_interface::Robot24SystemHardware,
+PLUGINLIB_EXPORT_CLASS(robot24_hardware_interface::Robot24SystemHardware,
                        hardware_interface::SystemInterface)
