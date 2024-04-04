@@ -6,8 +6,8 @@
     <xacro:property name="limit_effort" value="100" />
     <xacro:property name="limit_velocity" value="10" />
 
-    <xacro:property name="electrical_length" value="0.0762" /> <!-- depth -->
-    <xacro:property name="electrical_height" value="0.3048" />
+    <xacro:property name="electrical_length" value="0.2159" /> <!-- depth -->
+    <xacro:property name="electrical_height" value="0.2159" />
     <xacro:property name="electrical_width" value="${chassis_width}" />
 
     <xacro:property name="bucket_length" value="0.3556" /> <!-- depth -->
