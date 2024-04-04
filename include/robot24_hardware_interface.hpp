@@ -26,7 +26,7 @@
 
 const char *CLASS_NAME = "Robot24SystemHardware";
 
-namespace robot_hardware_interface
+namespace robot24_hardware_interface
 {
     class Robot24SystemHardware : public hardware_interface::SystemInterface
     {
