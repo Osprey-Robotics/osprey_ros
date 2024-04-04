@@ -10,10 +10,6 @@
     <xacro:property name="electrical_height" value="0.3048" />
     <xacro:property name="electrical_width" value="${chassis_width}" />
 
-    <xacro:property name="electronics_length" value="0.1016" /> <!-- depth -->
-    <xacro:property name="electronics_height" value="0.2032" />
-    <xacro:property name="electronics_width" value="${chassis_width}" />
-
     <xacro:property name="bucket_length" value="0.3556" /> <!-- depth -->
     <xacro:property name="bucket_height" value="0.254" />
     <xacro:property name="bucket_width" value="0.254" />
@@ -226,30 +222,6 @@
         </visual>
         <xacro:inertial_box mass="0.1" x="${bucket_length}" y="${bucket_width}" z="${bucket_height}">
             <origin xyz="${chassis_length/2} 0 ${bucket_height/2}" rpy="0 0 0"/>
-        </xacro:inertial_box>
-    </link>
-
-    <!-- Electronics Box -->
-    <joint name="electronics_joint" type="fixed">
-        <parent link="chassis"/>
-        <child link="electronics"/>
-        <origin xyz="${chassis_length/2 - electronics_length/2} -0.006 ${wheel_radius - chassis_height/3.5}" rpy="0 0 0"/>
-    </joint>
-    <link name="electronics">
-        <collision>
-            <geometry>
-                <box size="${electronics_length * collision_multiplier} ${electronics_width * collision_multiplier} ${electronics_height}"/>
-            </geometry>
-            <material name="white"/>
-        </collision>
-        <visual>
-            <geometry>
-                <box size="${electronics_length} ${electronics_width} ${electronics_height}"/>
-            </geometry>
-            <material name="white"/>
-        </visual>
-        <xacro:inertial_box mass="0.1" x="${electronics_length}" y="${electronics_width}" z="${electronics_height}">
-            <origin xyz="0 0 ${electronics_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
 
