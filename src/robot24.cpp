@@ -1,4 +1,4 @@
-/** Copyright 2024 Osprey Robotics - UNF
+/** Copyright 2023 Osprey Robotics - UNF
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -6,7 +6,7 @@
 
 #include <stdexcept>
 
-#include "robot.hpp"
+#include "robot24.hpp"
 
 namespace osprey_robotics
 {
