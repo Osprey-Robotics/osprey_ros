@@ -13,6 +13,7 @@
     <xacro:property name="bucket_length" value="0.3556" /> <!-- depth -->
     <xacro:property name="bucket_height" value="0.254" />
     <xacro:property name="bucket_width" value="0.254" />
+    <xacro:property name="bucket_mass" value="1.68" />
 
     <xacro:property name="bucket_frame_length" value="0.1524" /> <!-- depth -->
     <xacro:property name="bucket_frame_height" value="0.4064" />
@@ -220,7 +221,7 @@
             </geometry>
             <material name="gray"/>
         </visual>
-        <xacro:inertial_box mass="0.1" x="${bucket_length}" y="${bucket_width}" z="${bucket_height}">
+        <xacro:inertial_box mass="${bucket_mass}" x="${bucket_length}" y="${bucket_width}" z="${bucket_height}">
             <origin xyz="${chassis_length/2} 0 ${bucket_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
