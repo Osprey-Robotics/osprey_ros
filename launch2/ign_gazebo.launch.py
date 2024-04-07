@@ -80,6 +80,11 @@ def launch_setup(context: LaunchContext):
         executable="autonomy_node",
     )
 
+    remapper_spawner = Node(
+        package="osprey_ros",
+        executable="remapper_node",
+    )
+
     diff_drive_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -109,6 +114,7 @@ def launch_setup(context: LaunchContext):
         executable='async_slam_toolbox_node',
         output='screen',
         parameters=[ slam_params_file, {'use_sim_time': True} ],
+        remappings=[('/map', '/slam_toolbox/map'),],
     )
 
     static_transform_publisher_depth_camera = Node(
@@ -178,6 +184,13 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_remapper_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[remapper_spawner],
+        )
+    )
+
     delayed_diff_drive_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster,
@@ -210,6 +223,7 @@ def launch_setup(context: LaunchContext):
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
         delayed_slam_toolbox_node_spawner,
+        delayed_remapper_spawner,
         delayed_autonomy_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
