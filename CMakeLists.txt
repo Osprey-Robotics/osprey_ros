@@ -26,6 +26,7 @@ set(INCLUDE_DEPENDS
   ament_cmake
   hardware_interface
   control_msgs
+  map_msgs
   sensor_msgs
   std_msgs
   pluginlib
@@ -108,6 +109,7 @@ add_library(gpio_controller SHARED src/gpio_controller.cpp)
 if( ignition-gazebo6_FOUND )
     add_library(gz_random_rocks SHARED src/gz_random_rocks.cpp)
 endif()
+add_library(remapper SHARED src/remapper.cpp)
 add_library(robot-core
   SHARED
   src/usb.cpp
@@ -121,6 +123,7 @@ add_library(teleop_manual_joy SHARED src/teleop_manual_joy.cpp)
 
 # executable binaries
 add_executable(autonomy_node src/autonomy_node.cpp)
+add_executable(remapper_node src/remapper_node.cpp)
 add_executable(teleop_manual_joy_node src/teleop_manual_joy_node.cpp)
 add_executable(test-gpio-limit-switches src/tests/test-gpio-limit-switches.cpp)
 add_executable(test-gpio-relays src/tests/test-gpio-relays.cpp)
@@ -129,6 +132,7 @@ add_executable(test-usb-motors src/test-usb-motors.cpp)
 
 # add ROS dependencies
 ament_target_dependencies(gpio_controller ${INCLUDE_DEPENDS})
+ament_target_dependencies(remapper ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot_hardware_interface ${INCLUDE_DEPENDS})
 ament_target_dependencies(robot24_hardware_interface ${INCLUDE_DEPENDS})
 ament_target_dependencies(autonomy ${INCLUDE_DEPENDS})
@@ -136,6 +140,7 @@ ament_target_dependencies(teleop_manual_joy ${INCLUDE_DEPENDS})
 
 # link executable binaries to shared object libraries
 target_link_libraries(autonomy_node autonomy)
+target_link_libraries(remapper_node remapper)
 target_link_libraries(robot-core usb-1.0)
 target_link_libraries(robot robot-core gpio)
 target_link_libraries(robot_hardware_interface gpio robot usb-1.0)
@@ -149,6 +154,7 @@ target_link_libraries(test-usb-motors24 robot usb-1.0)
 
 # register ROS nodes
 rclcpp_components_register_nodes(autonomy "osprey_ros::Autonomy")
+rclcpp_components_register_nodes(autonomy "osprey_ros::ReMapper")
 rclcpp_components_register_nodes(teleop_manual_joy "teleop_manual_joy::TeleopManualJoy")
 
 ################################################################################
@@ -171,6 +177,8 @@ set(INSTALL_TARGETS
   autonomy_node
   gpio
   gpio_controller
+  remapper
+  remapper_node
   robot-core
   robot
   robot_hardware_interface
