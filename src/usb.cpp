@@ -162,6 +162,12 @@ namespace osprey_robotics
     {
         int r = 0;
 
+        if (_devices[serial] == NULL)
+        {
+            fprintf(stderr, "interface not found %s\n", serial.c_str());
+            return 0;
+        }
+
         r = libusb_claim_interface(_devices[serial], 0);
         if (r < 0)
         {
