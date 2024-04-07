@@ -51,6 +51,8 @@ namespace osprey_robotics
             }
         }
 
-        throw std::runtime_error("Could not find joint with name " + jointName);
+        fprintf(stderr, "Could not find joint with name %s \n", jointName.c_str());
+
+        return Joint();
     }
 }
