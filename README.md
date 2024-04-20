@@ -119,7 +119,7 @@ For remote operation over IP run the following commands on both systems prior
 to running ros launch files.
 ```bash
 export ROS_MASTER_URI=<robot_ip>:12345
-export ROS_IP=<robot_ip>10.1.2.7
+export ROS_IP=<robot_ip>
 ```
 
 ### Gamepad
