@@ -60,6 +60,10 @@ images or any ROS 2 Iron environment.
 To run on the actual hardware run the following command in your ros2 workspace;
 ex `~/ros2_ws/`.
 ```bash
+# 2024 Robot
+ros2 launch osprey_ros osprey_ros.launch.py year:=24
+
+# 2022 Robot
 ros2 launch osprey_ros osprey_ros.launch.py
 ```
 
@@ -67,6 +71,10 @@ ros2 launch osprey_ros osprey_ros.launch.py
 To run on simulated hardware run the following command in your ros2 workspace;
 ex `~/ros2_ws/`.
 ```bash
+# 2024 Robot
+ros2 launch osprey_ros osprey_ros.launch.py sim:=true year:=24
+
+# 2022 Robot
 ros2 launch osprey_ros osprey_ros.launch.py sim:=true
 ```
 
@@ -85,8 +93,23 @@ will launch a full instance of the robot, so do not run in addition to osprey_ro
 
 #### IGN Gazebo
 ```bash
+# 2024 Robot
+ros2 launch osprey_ros ign_gazebo.launch.py year:=24
+
+# 2022 Robot
 ros2 launch osprey_ros ign_gazebo.launch.py
 ```
+
+##### Artemis Arena
+Sample Artemis Arena
+```bash
+# 2024 Robot
+ros2 launch osprey_ros ign_gazebo.launch.py world:=artemis_arena year:=24
+
+# 2022 Robot
+ros2 launch osprey_ros ign_gazebo.launch.py world:=artemis_arena
+```
+
 
 ## Robot Human Controllers
 There are presently two ways to control the robot using [teleop twist joy](https://github.com/ros2/teleop_twist_joy) and [keyboard](https://github.com/ros2/teleop_twist_keyboard)
