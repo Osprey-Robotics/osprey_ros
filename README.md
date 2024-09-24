@@ -4,6 +4,10 @@ This project is the University of North Florida's Osprey Robotics Club ROS
 implementation for their NASA Lunabotics Remote Mining Competition Robots,
 past, present, and future.
 
+[UNF NASA Lunabotics Robot Gazebo Sim](https://github.com/user-attachments/assets/4e5a7f3b-0932-4da8-8692-cbe52aee0c04)
+
+Video demonstration of Navigation in Artemis Arena with random rock obstacle.
+
 ## Environment Preparation
 The following assumes you have installed all the necessary ROS 2 Iron packages, and have sourced the installation before running any `ros2` commands.
 ```bash
